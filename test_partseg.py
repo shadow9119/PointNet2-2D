@@ -1,0 +1,280 @@
+import argparse
+import os
+from pathlib import Path
+from data_utils.ShapeNetDataLoader import PartNormalDataset
+import torch
+import logging
+import sys
+import importlib
+from tqdm import tqdm
+import numpy as np
+from sklearn.metrics import confusion_matrix
+import pandas as pd
+from sklearn.metrics import precision_recall_fscore_support
+
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+import gc  # 添加垃圾回收模块
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = BASE_DIR
+sys.path.append(os.path.join(ROOT_DIR, 'models'))
+
+seg_classes = {'signal': [0, 1]}
+seg_label_to_cat = {label: cat for cat in seg_classes for label in seg_classes[cat]}
+
+def plot_points(global_index, points, pred_choice, dataset_name, filename):
+    pred_choice = np.array(pred_choice, dtype=int)
+    color_map = {0: 'blue', 1: 'orange'}
+    colors = np.array([color_map[label] for label in pred_choice])
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    scatter = ax.scatter(points[:, 0], points[:, 1], c=colors, s=1, alpha=0.7)
+    ax.set_title(f'{dataset_name.capitalize()} Set - {filename}')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.legend(handles=[
+        plt.Line2D([0], [0], marker='o', color='w', label='Noise', markersize=5, markerfacecolor='blue'),
+        plt.Line2D([0], [0], marker='o', color='w', label='Signal', markersize=5, markerfacecolor='orange')
+    ], title="Classes")
+
+    save_path = os.path.join(BASE_DIR, 'results/test/')
+    os.makedirs(save_path, exist_ok=True)
+    base_filename = os.path.splitext(filename)[0]
+    output_path = os.path.join(save_path, f'{base_filename}.svg')
+    
+    plt.savefig(output_path, bbox_inches='tight')
+    
+    # 显式清理图形资源
+    plt.close(fig)
+    del fig, ax, scatter
+    gc.collect()
+
+def to_categorical(y, num_classes):
+    new_y = torch.eye(num_classes)[y.cpu().data.numpy(),]
+    return new_y.to(y.device)
+
+def pc_denormalize(pc, pc_min, pc_max):
+    for i in range(pc.shape[1]):
+        pc[:, i] = (pc[:, i] + 1) / 2 * (pc_max[i] - pc_min[i]) + pc_min[i]
+    return pc
+
+def parse_args():
+    parser = argparse.ArgumentParser('PointNet')
+    parser.add_argument('--batch_size', type=int, default=24, help='batch size in testing')
+    parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
+    parser.add_argument('--num_point', type=int, default=None, help='point Number, set None for all points')
+    parser.add_argument('--log_dir', type=str, required=True, help='experiment root')
+    parser.add_argument('--ckpt', type=str, default=None, help='model checkpoint')
+    parser.add_argument('--conf', action='store_true', default=False, help='use confidence level')
+    parser.add_argument('--num_votes', type=int, default=3, help='aggregate segmentation scores with voting')
+    parser.add_argument('--data_root', type=str, required=True, help='data root file')
+    parser.add_argument('--output', action='store_false', help='output test results')
+    parser.add_argument('--threshold', type=float, default=0.5, help='probability threshold')
+    return parser.parse_args()
+
+def main(args):
+    def log_string(str):
+        logger.info(str)
+        print(str)
+
+    # 设置CUDA设备并清理缓存
+    os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
+    torch.cuda.empty_cache()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    experiment_dir = os.path.join('log', 'part_seg', args.log_dir)
+
+    '''LOG'''
+    args = parse_args()
+    logger = logging.getLogger("Model")
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler = logging.FileHandler(os.path.join(experiment_dir, 'eval.txt'))
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+    log_string('PARAMETER ...')
+    log_string(args)
+
+    if args.output:
+        if args.ckpt:
+            output_dir = Path(experiment_dir + '/output_' + str(args.ckpt).split('.')[0] + '_' + str(args.threshold))
+        else:
+            output_dir = Path(experiment_dir + '/output_' + str(args.threshold))
+
+        if not output_dir.exists():
+            output_dir.mkdir()
+
+    root = args.data_root
+
+    # 减少num_workers以降低内存使用
+    TEST_DATASET = PartNormalDataset(root=root, npoints=args.num_point, split='test', conf_channel=args.conf)
+    testDataLoader = torch.utils.data.DataLoader(TEST_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=2)
+    log_string("test_partseg中，已读入test集个数: %d" % len(TEST_DATASET))
+    
+    num_classes = 1
+    num_part = 2
+
+    '''MODEL LOADING'''
+    model_name = os.listdir(os.path.join(experiment_dir, 'logs'))[0].split('.')[0]
+    MODEL = importlib.import_module(model_name)
+    classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device)
+    
+    # 加载检查点时清理缓存
+    if args.ckpt:
+        checkpoint = torch.load(os.path.join(experiment_dir, 'checkpoints', args.ckpt))
+    else:
+        checkpoint = torch.load(os.path.join(experiment_dir, 'checkpoints/model.pth'))
+    
+    classifier.load_state_dict(checkpoint['model_state_dict'])
+    del checkpoint  # 删除不再需要的检查点
+    torch.cuda.empty_cache()
+
+    thres = args.threshold
+
+    with torch.no_grad():
+        tp_acc, fp_acc, fn_acc = 0, 0, 0
+        test_metrics = {}
+        classifier = classifier.eval()
+        global_index = 0
+        results = []
+
+        for batch_id, (points, label, target, point_set_normalized_mask, pc_min, pc_max, fn) in tqdm(enumerate(testDataLoader), total=len(testDataLoader), smoothing=0.9):
+            cur_batch_size, NUM_POINT, _ = points.size()
+            points, label, target = points.float().to(device), label.long().to(device), target.long().to(device)
+            points = points.transpose(2, 1)
+            
+            # 初始化投票池并立即使用
+            vote_pool = torch.zeros(target.size()[0], target.size()[1], num_part).to(device)
+            for _ in range(args.num_votes):
+                seg_pred, _ = classifier(points, to_categorical(label, num_classes))
+                vote_pool += seg_pred
+                del seg_pred  # 及时删除中间变量
+            
+            seg_pred = vote_pool / args.num_votes
+            cur_pred = seg_pred.cpu().numpy()
+            del vote_pool, seg_pred
+            
+            # 预分配数组
+            cur_pred_val = np.zeros((cur_batch_size, NUM_POINT), dtype=np.int32)
+            cur_pred_prob = np.zeros((cur_batch_size, NUM_POINT), dtype=np.float64)
+            
+            target_np = target.cpu().data.numpy()
+            point_set_normalized_mask_np = point_set_normalized_mask.numpy()
+            
+            cur_pred_prob_mask = []
+            cur_pred_val_mask = []
+            target_mask = []
+
+            for i in range(cur_batch_size):
+                prob = np.exp(cur_pred[i, :, :])
+                cur_pred_prob[i, :] = prob[:, 1]
+                cur_pred_val[i, :] = np.where(prob[:, 1] < thres, 0, 1)
+                cur_mask = point_set_normalized_mask_np[i, :]
+                cur_pred_prob_mask.append(cur_pred_prob[i, cur_mask])
+                cur_pred_val_mask.append(cur_pred_val[i, cur_mask])
+                target_mask.append(target_np[i, cur_mask])
+            
+            del cur_pred  # 删除不再需要的大数组
+
+            if args.output:
+                points_np = points.transpose(2, 1).cpu().numpy()
+                pc_min_np = pc_min.numpy()
+                pc_max_np = pc_max.numpy()
+
+                for i in range(cur_batch_size):
+                    cur_points = points_np[i, :, :]
+                    cur_mask = point_set_normalized_mask_np[i, :]
+                    cur_points = cur_points[cur_mask, :]
+                    
+                    output_points = np.zeros((cur_points.shape[0], 4), dtype=np.float64)
+                    output_points[:, 0:2] = cur_points[:, 0:2]
+                    cur_pc_min = pc_min_np[i, :]
+                    cur_pc_max = pc_max_np[i, :]
+                    output_points[:, 0:2] = pc_denormalize(output_points[:, 0:2], cur_pc_min, cur_pc_max)
+
+                    output_points[:, 2] = cur_pred_prob_mask[i]
+                    output_points[:, 3] = cur_pred_val_mask[i]
+
+                    output_file = os.path.basename(fn[i])
+                    output_path = os.path.join(output_dir, output_file)
+                    np.savetxt(output_path, output_points, delimiter=',', fmt='%.4f')
+                    
+                    # 计算每个文件的指标
+                    segp = cur_pred_val_mask[i]
+                    segl = target_mask[i]
+                    
+                    precision, recall, f1, _ = precision_recall_fscore_support(
+                        segl, segp, average='binary', pos_label=1, zero_division=0
+                    )
+                    
+                    current_filename = os.path.basename(fn[i])
+                    plot_points(global_index, cur_points, segp, 'test', current_filename)
+                    global_index += 1
+                    
+                    results.append({
+                        'Filename': current_filename,
+                        'Precision': precision,
+                        'Recall': recall,
+                        'F1 Score': f1
+                    })
+                    
+                    # 清理循环中的变量
+                    del cur_points, output_points, segp, segl
+                
+                del points_np, pc_min_np, pc_max_np
+            
+            # 计算批处理的混淆矩阵
+            target_mask_flat = np.hstack(target_mask)
+            cur_pred_val_mask_flat = np.hstack(cur_pred_val_mask)
+            
+            cm = confusion_matrix(target_mask_flat, cur_pred_val_mask_flat)
+            
+            if cm.shape[0] == 1:
+                tp, fp, fn = 0, 0, 0
+            else:
+                tp, fp, fn = cm[1, 1], cm[0, 1], cm[1, 0]
+
+            tp_acc += tp
+            fp_acc += fp
+            fn_acc += fn
+            
+            # 清理批处理变量
+            del target_mask, cur_pred_val_mask, target_mask_flat, cur_pred_val_mask_flat, cm
+            gc.collect()
+            torch.cuda.empty_cache()
+
+        # 计算并保存全局指标
+        precision = tp_acc / (tp_acc + fp_acc) if (tp_acc + fp_acc) > 0 else 1.0
+        recall = tp_acc / (tp_acc + fn_acc) if (tp_acc + fn_acc) > 0 else 1.0
+        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        
+        test_metrics['Precision'] = precision
+        test_metrics['Recall'] = recall
+        test_metrics['F1 score'] = f1
+        
+        log_string('Precision: %.5f' % test_metrics['Precision'])
+        log_string('Recall: %.5f' % test_metrics['Recall'])
+        log_string('F1 score: %.5f' % test_metrics['F1 score'])
+        
+        # 保存结果到CSV
+        results_df = pd.DataFrame(results)
+        global_metrics = {
+            'Filename': '[Global Metrics]',
+            'Precision': test_metrics['Precision'],
+            'Recall': test_metrics['Recall'],
+            'F1 Score': test_metrics['F1 score']
+        }
+        results_df = pd.concat([results_df, pd.DataFrame([global_metrics])], ignore_index=True)
+        results_df.to_csv(os.path.join(experiment_dir, 'per_file_metrics.csv'), index=False)
+        log_string(f'每个文件的指标 + 全局指标已保存至: per_file_metrics.csv')
+
+if __name__ == '__main__':
+    args = parse_args()
+    try:
+        main(args)
+    finally:
+        # 确保程序结束时清理所有资源
+        torch.cuda.empty_cache()
+        gc.collect()
