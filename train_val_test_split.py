@@ -63,6 +63,7 @@ def main(args):
     file_list_simulated_code = collect_files_recursively(data_simulated_code)
 
     # 以分层的方式将4个文件夹分成训练集train、验证集val和测试集test
+    print("分割real_water集：")
     train_list_real_water,val_list_real_water,test_list_real_water=split_data(file_list_real_water)
     print("分割real_day集：")
     train_list_real_day, val_list_real_day, test_list_real_day = split_data(file_list_real_day)
@@ -76,7 +77,7 @@ def main(args):
     # 根据需要确定 train集 val集 和 test集
     train_all = train_list_simulated_code + val_list_simulated_code
     val_all = test_list_simulated_code
-    test_all = train_list_real_water + val_list_real_water + test_list_real_water + train_list_real_day + val_list_real_day + test_list_real_day + train_list_real_night + val_list_real_night + test_list_real_night + train_list_simulated_ICESat_2 + val_list_simulated_ICESat_2 + test_list_simulated_ICESat_2
+    test_all = train_list_real_water + val_list_real_water + test_list_real_water + train_list_real_day + val_list_real_day + test_list_real_day + train_list_real_night + val_list_real_night + test_list_real_night
 
     create_json_file(train_all, val_all, test_all)
     print("train集总文件数：" + str(len(train_all)))
