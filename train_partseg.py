@@ -81,6 +81,42 @@ def plot_points(index, points, pred_choice, dataset_name, save_path):
     plt.clf()
     plt.close()
 
+def create_confusion_matrix_figure(cm, class_names):
+    """
+    创建混淆矩阵图形
+    cm: 混淆矩阵 (tensor)
+    class_names: 类别名称列表
+    """
+    # 转换为numpy数组
+    cm_np = cm.cpu().numpy() if hasattr(cm, 'cpu') else cm
+    
+    # 创建图形
+    fig, ax = plt.subplots(figsize=(8, 6))
+    
+    # 使用matplotlib的imshow显示混淆矩阵
+    im = ax.imshow(cm_np, interpolation='nearest', cmap=plt.cm.Blues)
+    ax.figure.colorbar(im, ax=ax)
+    
+    # 设置刻度标签
+    ax.set(xticks=np.arange(cm_np.shape[1]),
+           yticks=np.arange(cm_np.shape[0]),
+           xticklabels=class_names, yticklabels=class_names,
+           title="Confusion Matrix",
+           ylabel="True Label",
+           xlabel="Predicted Label")
+    
+    # 在每个单元格中添加文本
+    thresh = cm_np.max() / 2.
+    for i in range(cm_np.shape[0]):
+        for j in range(cm_np.shape[1]):
+            ax.text(j, i, format(cm_np[i, j], 'd'),
+                    ha="center", va="center",
+                    color="white" if cm_np[i, j] > thresh else "black")
+    
+    return fig
+
+
+
 def inplace_relu(m):
     classname = m.__class__.__name__
     if classname.find('ReLU') != -1:
@@ -174,6 +210,7 @@ def main(args):
     # tensorboard set-up
     # 在 [./runs/日期(年月日时分秒)/]文件夹下，写入 TensorBoard 日志
     writer = SummaryWriter(os.path.join('runs', timestr))
+    log_string('TensorBoard logs will be saved to: %s' % os.path.join('runs', timestr))
 
     root = args.data_root  # 获得根目录路径
 
@@ -199,10 +236,8 @@ def main(args):
     shutil.copy('models/pointnet2_utils.py', str(exp_dir))
 
     classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device) # 实例化模型和损失函数 在models\pointnet2_part_seg_msg.py中
-    # cross-entropy loss 交叉熵损失函数
-    criterion = MODEL.get_loss().to(device)
-    loss_weight = args.loss_weight
-    weight = torch.Tensor([1.0, loss_weight]).to(device)
+    # 使用自适应Focal损失函数
+    criterion = MODEL.AdaptiveFocalLoss().to(device)
     classifier.apply(inplace_relu)
 
     def weights_init(m):
@@ -318,8 +353,7 @@ def main(args):
             fp += cm[0, 1]
             fn += cm[1, 0]
 
-            loss = criterion(seg_pred, target, weight=weight)
-            # loss = criterion(seg_pred, target)
+            loss = criterion(seg_pred, target)
             loss_acc.append(loss.detach().item())
             loss.backward()
             optimizer.step()
@@ -379,8 +413,7 @@ def main(args):
                 val_fp += cm[0, 1]
                 val_fn += cm[1, 0]
 
-                loss = criterion(seg_pred, target, weight=weight)
-                # loss = criterion(seg_pred, target)
+                loss = criterion(seg_pred, target)
                 val_loss_acc.append(loss.item())
 
         val_loss_acc = np.mean(val_loss_acc)
@@ -397,25 +430,31 @@ def main(args):
         log_string('Val F1 score: %.5f' % val_f1)
 
 
-        if epoch == start_epoch or (epoch + 1) % 10 == 0:
-            # add scalar to tensorboard 向 TensorBoard 中添加标量
-            writer.add_scalar('Learning rate', lr, epoch + 1)
-            writer.add_scalar('Loss/train', loss_acc, epoch + 1)
-            writer.add_scalar('Loss/val', val_loss_acc, epoch + 1)
-            writer.add_scalar('F1 score/train', f1, epoch + 1)
-            writer.add_scalar('F1 score/val', val_f1, epoch + 1)
+        # 每个epoch都向TensorBoard添加标量数据 - 只记录P、R、F值
+        writer.add_scalar('Learning rate', lr, epoch + 1)
+        writer.add_scalar('Loss/train', loss_acc, epoch + 1)
+        writer.add_scalar('Loss/val', val_loss_acc, epoch + 1)  
+        writer.add_scalar('Precision/train', precision, epoch + 1)
+        writer.add_scalar('Precision/val', val_precision, epoch + 1)
+        writer.add_scalar('Recall/train', recall, epoch + 1)
+        writer.add_scalar('Recall/val', val_recall, epoch + 1)
+        writer.add_scalar('F1 score/train', f1, epoch + 1)
+        writer.add_scalar('F1 score/val', val_f1, epoch + 1)
+        
+        # 每2个epoch刷新一次缓冲区
+        if (epoch + 1) % 2 == 0:
             writer.flush()
-            writer.close()
 
         # early stopping提前停止
         if early_stopping is True:
-            if len(val_loss_acc_list) > 3 and np.all(np.abs(np.diff(val_loss_acc_list[-3:])) < 0.001):
-                # 如果 val 损失在 3 个 epoch 内的改善小于 0.001，则保存模型
-            # if len(val_loss_acc_list) > 3 and np.all(np.diff(val_loss_acc_list[-3:]) > 0):
-            #     # 如果 val 损失在 3 个 epoch 内没有改善，则保存模型
+            # if len(val_loss_acc_list) > 3 and np.all(np.abs(np.diff(val_loss_acc_list[-3:])) < 0.001):
+            #     # 如果 val 损失在 3 个 epoch 内的改善小于 0.001，则保存模型
+            if len(val_loss_acc_list) > 10 and np.all(np.diff(val_loss_acc_list[-3:]) > 0):
+                # 如果 val 损失在 10 个 epoch 内没有改善，则保存模型
                 logger.info('Early Stopping...')
                 logger.info('Save model...')
                 savepath = str(checkpoints_dir) + '/model.pth'
+                log_string('Early Stopping...')
                 log_string('Saving at %s' % savepath)
                 state = {
                     'epoch': epoch + 1,
@@ -456,6 +495,10 @@ def main(args):
         'optimizer_state_dict': optimizer.state_dict(), # 优化器的状态
     }
     torch.save(state, savepath) # 将 state 对象（包括模型参数、优化器状态）保存到指定路径 trained_model/model.pth 中
+    
+    # 关闭TensorBoard写入器
+    writer.close()
+    log_string('TensorBoard logs saved to: %s' % os.path.join('runs', timestr))
 
     # # 将模型输入测试集测试
     # logger.info('Test model...')

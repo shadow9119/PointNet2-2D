@@ -7,12 +7,13 @@ data_root = 'C:/Users/14711/Desktop/PointNet2-main/data/'
 split_file = 'train_val_test_split.py'
 train_file = 'train_partseg.py'
 model = 'pointnet2_part_seg_msg'
-epoch_num = 5
-npoint = 10000  # 将 npoint 设为 None，表示不固定点云数量
-batch_size = 4 # 如果npoint为None，则batch_size只能为1，因为无法合并
+epoch_num = 500
+npoint = None  # 将 npoint 设为 None，表示不固定点云数量
+batch_size = 1 # 如果npoint为None，则batch_size只能为1，因为无法合并
 learning_rate = 0.0001
-lr_decay = 0.9 # 学习率衰减因子，通常用于在训练过程中逐渐降低学习率以提高模型的泛化能力。这里值为1表示没有进行学习率衰减
-step_size = 1 # 通常与学习率调度器一起使用，表示经过多少个epoch后应用学习率衰减。与学习率衰减方案配合使用以更好地控制学习率调整
+lr_decay = 0.8 # 学习率衰减因子，通常用于在训练过程中逐渐降低学习率以提高模型的泛化能力。这里值为1表示没有进行学习率衰减
+decay_rate = 1e-3
+step_size = 20 # 通常与学习率调度器一起使用，表示经过多少个epoch后应用学习率衰减。与学习率衰减方案配合使用以更好地控制学习率调整
 loss_weight = 1.0
 ckpt = ''
 
@@ -36,7 +37,8 @@ train_command = [
     '--lr_decay', str(lr_decay),
     '--ckpt', ckpt,
     '--step_size', str(step_size),
-    # '--early_stopping'
+    # '--early_stopping',
+    '--decay_rate', str(decay_rate)
 ]
 
 # 如果 npoint 不为 None，则添加 --npoint 参数

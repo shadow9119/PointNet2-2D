@@ -92,3 +92,65 @@ class FocalLoss(nn.Module):
         logpt = (1-pt)**self.gamma * logpt
         loss = F.nll_loss(logpt, target, self.weight)
         return loss
+
+# 简单交叉熵损失（带类别权重）
+class PointNetPlusPlusLoss(nn.Module):
+    def __init__(self, weight=None):
+        super(PointNetPlusPlusLoss, self).__init__()
+        self.weight = weight
+
+    def forward(self, pred, target):
+        """
+        pred: [B, C, N] 预测值 logits (C=2)
+        target: [B, N] 真实标签
+        """
+        # 将预测从 [B, C, N] -> [B*N, C] 以匹配 F.cross_entropy 输入
+        pred = pred.permute(0, 2, 1).contiguous().view(-1, pred.size(1))
+        target = target.view(-1)
+        loss = F.cross_entropy(pred, target, weight=self.weight)
+        return loss
+
+# 自适应Focal loss函数
+class AdaptiveFocalLoss(nn.Module):
+    """
+    自适应 Focal Loss for 二分类点云任务
+    输入:
+        logits: [B, 2, N] 或 [B, C, N]，未经过 softmax
+        target: [B, N]，标签 0/1
+        gamma: 聚焦系数，默认 2
+        eps: 防止 log(0)
+    """
+    def __init__(self, gamma=2.0, eps=1e-8):
+        super(AdaptiveFocalLoss, self).__init__()
+        self.gamma = gamma
+        self.eps = eps
+
+    def forward(self, logits, target):
+        """
+        logits: [B*N, C]
+        target: [B*N] 或 [B, N]
+        """
+
+        # 如果输入已经是 [B*N, C]，获取类别数C
+        B_N, C = logits.shape
+
+        # 2. 计算 softmax 概率
+        probs = F.softmax(logits, dim=1)
+        probs = torch.clamp(probs, self.eps, 1.0)  # 防止 log(0)
+
+        # 3. 动态计算 alpha: batch 内类别分布
+        num_pos = (target == 1).sum().item()
+        num_neg = (target == 0).sum().item()
+        total = num_pos + num_neg + self.eps
+        alpha = torch.zeros_like(probs)
+        alpha[:, 0] = num_pos / total      # 类别 0 权重 = 对面类别比例
+        alpha[:, 1] = num_neg / total      # 类别 1 权重 = 对面类别比例
+
+        # 4. 取目标类别概率
+        pt = probs.gather(1, target.unsqueeze(1)).squeeze(1)
+        at = alpha.gather(1, target.unsqueeze(1)).squeeze(1)
+
+        # 5. 计算 Focal Loss
+        loss = -at * (1 - pt) ** self.gamma * torch.log(pt)
+
+        return loss.mean()
