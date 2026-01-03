@@ -24,19 +24,26 @@ sys.path.append(os.path.join(ROOT_DIR, 'models'))
 seg_classes = {'signal': [0, 1]}
 seg_label_to_cat = {label: cat for cat in seg_classes for label in seg_classes[cat]}
 
-def plot_points(global_index, points, pred_choice, dataset_name, filename):
+def plot_points(global_index, points, pred_choice, dataset_name, filename, precision=None, recall=None, f1=None):
     pred_choice = np.array(pred_choice, dtype=int)
-    color_map = {0: 'blue', 1: 'orange'}
+    color_map = {0: [0.93, 0.69, 0.13], 1: [0.49, 0.18, 0.56]}
     colors = np.array([color_map[label] for label in pred_choice])
 
     fig, ax = plt.subplots(figsize=(10, 8))
     scatter = ax.scatter(points[:, 0], points[:, 1], c=colors, s=1, alpha=0.7)
-    ax.set_title(f'{dataset_name.capitalize()} Set - {filename}')
+    
+    # 在标题中包含R、P、F值
+    if precision is not None and recall is not None and f1 is not None:
+        title = f'{dataset_name.capitalize()} Set - {filename}\nP: {precision:.3f}, R: {recall:.3f}, F1: {f1:.3f}'
+    else:
+        title = f'{dataset_name.capitalize()} Set - {filename}'
+    
+    ax.set_title(title)
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.legend(handles=[
-        plt.Line2D([0], [0], marker='o', color='w', label='Noise', markersize=5, markerfacecolor='blue'),
-        plt.Line2D([0], [0], marker='o', color='w', label='Signal', markersize=5, markerfacecolor='orange')
+        plt.Line2D([0], [0], marker='o', color='w', label='Noise', markersize=5, markerfacecolor=[0.93, 0.69, 0.13]),
+        plt.Line2D([0], [0], marker='o', color='w', label='Signal', markersize=5, markerfacecolor=[0.49, 0.18, 0.56])
     ], title="Classes")
 
     save_path = os.path.join(BASE_DIR, 'results/test/')
@@ -210,7 +217,7 @@ def main(args):
                     )
                     
                     current_filename = os.path.basename(fn[i])
-                    plot_points(global_index, cur_points, segp, 'test', current_filename)
+                    plot_points(global_index, cur_points, segp, 'test', current_filename, precision, recall, f1)
                     global_index += 1
                     
                     results.append({
@@ -219,6 +226,9 @@ def main(args):
                         'Recall': recall,
                         'F1 Score': f1
                     })
+                    
+                    # 输出每个文件的指标到控制台
+                    log_string(f'文件: {current_filename} - P: {precision:.5f}, R: {recall:.5f}, F: {f1:.5f}')
                     
                     # 清理循环中的变量
                     del cur_points, output_points, segp, segl
