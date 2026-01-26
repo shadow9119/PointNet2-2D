@@ -230,14 +230,25 @@ def main(args):
 
     early_stopping = args.early_stopping # 用于在训练过程中监控模型的性能，如果模型在验证集上的性能不再提升，则提前停止训练，防止过拟合和节省计算资源
     '''MODEL LOADING'''
-    MODEL = importlib.import_module(args.model) # 导入指定【深度学习】模型模块，将其赋值给 MODEL 变量，之后可以通过 MODEL 访问该模块中的函数和类
-    # 复制模型相关文件到实验目录exp_dir
+    MODEL = importlib.import_module(args.model) 
     shutil.copy('models/%s.py' % args.model, str(exp_dir))
     shutil.copy('models/pointnet2_utils.py', str(exp_dir))
 
-    classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device) # 实例化模型和损失函数 在models\pointnet2_part_seg_msg.py中
-    # 使用自适应Focal损失函数
+    classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device)
+    
+    # ================= 损失函数选择区 (三选一) =================
+    
+    # 选项 1: 负对数似然损失 (Baseline)
+    # criterion = MODEL.get_loss().to(device)
+    
+    # 选项 2: 固定权重的 Focal Loss
+    # criterion = MODEL.FocalLoss().to(device)
+
+    # 选项 3: 自适应 Focal Loss (推荐，无需调参)
     criterion = MODEL.AdaptiveFocalLoss().to(device)
+    
+    # ========================================================
+
     classifier.apply(inplace_relu)
 
     def weights_init(m):

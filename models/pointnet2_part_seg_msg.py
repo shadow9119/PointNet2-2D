@@ -86,7 +86,6 @@ class FocalLoss(nn.Module):
         input: [N, C]
         target: [N, ]
         """
-        # logpt = F.log_softmax(input, dim=1)
         logpt = input
         pt = torch.exp(logpt)
         logpt = (1-pt)**self.gamma * logpt
@@ -113,44 +112,55 @@ class PointNetPlusPlusLoss(nn.Module):
 # 自适应Focal loss函数
 class AdaptiveFocalLoss(nn.Module):
     """
-    自适应 Focal Loss for 二分类点云任务
-    输入:
-        logits: [B, 2, N] 或 [B, C, N]，未经过 softmax
-        target: [B, N]，标签 0/1
-        gamma: 聚焦系数，默认 2
-        eps: 防止 log(0)
+    自适应 Focal Loss
+    适配模型的 Log_Softmax 输出
     """
     def __init__(self, gamma=2.0, eps=1e-8):
         super(AdaptiveFocalLoss, self).__init__()
         self.gamma = gamma
         self.eps = eps
 
-    def forward(self, logits, target):
+    def forward(self, pred, target):
         """
-        logits: [B*N, C]
-        target: [B*N] 或 [B, N]
+        pred: [B*N, C] 模型输出的对数概率 (Log Softmax output)
+        target: [B*N] 真实标签
         """
-
-        # 如果输入已经是 [B*N, C]，获取类别数C
-        B_N, C = logits.shape
-
-        # 2. 计算 softmax 概率
-        probs = F.softmax(logits, dim=1)
-        probs = torch.clamp(probs, self.eps, 1.0)  # 防止 log(0)
-
-        # 3. 动态计算 alpha: batch 内类别分布
-        num_pos = (target == 1).sum().item()
-        num_neg = (target == 0).sum().item()
-        total = num_pos + num_neg + self.eps
+        # 1. 还原概率 (因为输入 pred 已经是 log(p) 了，所以 p = exp(pred))
+        probs = torch.exp(pred)
+        
+        # 2. 动态计算 alpha (基于当前 Batch 的类别分布)
+        # 注意：这里假设是二分类或多分类，以下逻辑通用
+        # 获取当前 batch 中每个类别的数量
+        C = pred.shape[1]
+        
+        # 初始化 alpha
         alpha = torch.zeros_like(probs)
-        alpha[:, 0] = num_pos / total      # 类别 0 权重 = 对面类别比例
-        alpha[:, 1] = num_neg / total      # 类别 1 权重 = 对面类别比例
+        
+        # 计算总样本数
+        total_count = target.numel() + self.eps
+        
+        # 针对每个类别计算反向频率权重
+        for c in range(C):
+            # 统计类别 c 的样本数
+            count_c = (target == c).sum().float()
+            # 简单反向频率：类别越少，权重越大
+            # 权重 = (总数 - 该类数量) / 总数
+            # 对于二分类：类0权重 = 类1数量占比；类1权重 = 类0数量占比
+            weight_c = (total_count - count_c) / total_count
+            
+            # 将该权重赋予对应的列
+            alpha[:, c] = weight_c
 
-        # 4. 取目标类别概率
+        # 3. 获取目标类别的概率 pt 和权重 at
+        # gather 用于提取 target 对应位置的概率和权重
         pt = probs.gather(1, target.unsqueeze(1)).squeeze(1)
         at = alpha.gather(1, target.unsqueeze(1)).squeeze(1)
+        
+        # 获取目标类别的 log_pt (直接从 pred 取，避免重复 log 运算导致数值不稳定)
+        log_pt = pred.gather(1, target.unsqueeze(1)).squeeze(1)
 
-        # 5. 计算 Focal Loss
-        loss = -at * (1 - pt) ** self.gamma * torch.log(pt)
+        # 4. 计算 Focal Loss
+        # 公式: -alpha * (1 - pt)^gamma * log(pt)
+        loss = -at * (1 - pt) ** self.gamma * log_pt
 
         return loss.mean()
