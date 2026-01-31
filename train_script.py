@@ -1,9 +1,9 @@
 import os
 import subprocess
 
-# 设置参数
-SOURCEDIR = 'C:/Users/14711/Desktop/PointNet2-main'
-data_root = 'C:/Users/14711/Desktop/PointNet2-main/data/'
+# 自动获取项目根目录（train_script.py所在目录）
+SOURCEDIR = os.path.dirname(os.path.abspath(__file__))
+data_root = os.path.join(SOURCEDIR, 'data')
 split_file = 'train_val_test_split.py'
 train_file = 'train_partseg.py'
 model = 'pointnet2_part_seg_msg'
