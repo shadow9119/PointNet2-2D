@@ -153,6 +153,10 @@ def parse_args():
     parser.add_argument('--data_root', type=str, required=True, help='data root file')
     parser.add_argument('--loss_weight', type=float, default=1.0, help='training loss weight')
     parser.add_argument('--early_stopping', action='store_true', default=False, help='use early stopping or not')
+    parser.add_argument('--loss_type', type=str, default='adaptive_focal', choices=['nll', 'focal', 'adaptive_focal'],
+                        help='loss function type: nll (negative log likelihood), focal (Focal Loss), adaptive_focal (Adaptive Focal Loss)')
+    parser.add_argument('--focal_gamma', type=float, default=2.0, help='gamma parameter for Focal Loss')
+    parser.add_argument('--log_dir_name', type=str, default=None, help='custom log directory name (default: use current date)')
 
     return parser.parse_args()
 
@@ -179,7 +183,12 @@ def main(args):
 
     '''CREATE DIR'''
     # 创建文件夹 [./log/part_seg/日期(年月日时分秒)/checkpoints/] 和 [./log/part_seg/日期(年月日时分秒)/logs/]
-    timestr = str(datetime.datetime.now().strftime('%Y-%m-%d'))
+    # 如果指定了 log_dir_name，则使用自定义名称；否则使用当前日期
+    if args.log_dir_name:
+        timestr = args.log_dir_name
+    else:
+        timestr = str(datetime.datetime.now().strftime('%Y-%m-%d'))
+
     exp_dir = Path('./log/')
     exp_dir.mkdir(exist_ok=True)
     exp_dir = exp_dir.joinpath('part_seg')
@@ -235,18 +244,29 @@ def main(args):
     shutil.copy('models/pointnet2_utils.py', str(exp_dir))
 
     classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device)
-    
-    # ================= 损失函数选择区 (三选一) =================
-    
-    # 选项 1: 负对数似然损失 (Baseline)
-    # criterion = MODEL.get_loss().to(device)
-    
-    # 选项 2: 固定权重的 Focal Loss
-    # criterion = MODEL.FocalLoss().to(device)
 
-    # 选项 3: 自适应 Focal Loss (推荐，无需调参)
-    criterion = MODEL.AdaptiveFocalLoss().to(device)
-    
+    # ================= 损失函数选择区 =================
+
+    log_string(f'Using loss function: {args.loss_type}')
+
+    if args.loss_type == 'nll':
+        # 选项 1: 负对数似然损失 (Baseline)
+        criterion = MODEL.get_loss().to(device)
+        log_string('Loss function: Negative Log Likelihood (NLL)')
+
+    elif args.loss_type == 'focal':
+        # 选项 2: 固定权重的 Focal Loss
+        criterion = MODEL.FocalLoss(gamma=args.focal_gamma).to(device)
+        log_string(f'Loss function: Focal Loss (gamma={args.focal_gamma})')
+
+    elif args.loss_type == 'adaptive_focal':
+        # 选项 3: 自适应 Focal Loss (推荐，无需调参)
+        criterion = MODEL.AdaptiveFocalLoss(gamma=args.focal_gamma).to(device)
+        log_string(f'Loss function: Adaptive Focal Loss (gamma={args.focal_gamma})')
+
+    else:
+        raise ValueError(f'Unknown loss type: {args.loss_type}')
+
     # ========================================================
 
     classifier.apply(inplace_relu)

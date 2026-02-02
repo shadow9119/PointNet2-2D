@@ -72,6 +72,7 @@ class get_loss(nn.Module):
 
         return total_loss
 
+# 简单Focal loss函数
 class FocalLoss(nn.Module):
     '''
     Multi-class Focal loss implementation
@@ -90,23 +91,6 @@ class FocalLoss(nn.Module):
         pt = torch.exp(logpt)
         logpt = (1-pt)**self.gamma * logpt
         loss = F.nll_loss(logpt, target, self.weight)
-        return loss
-
-# 简单交叉熵损失（带类别权重）
-class PointNetPlusPlusLoss(nn.Module):
-    def __init__(self, weight=None):
-        super(PointNetPlusPlusLoss, self).__init__()
-        self.weight = weight
-
-    def forward(self, pred, target):
-        """
-        pred: [B, C, N] 预测值 logits (C=2)
-        target: [B, N] 真实标签
-        """
-        # 将预测从 [B, C, N] -> [B*N, C] 以匹配 F.cross_entropy 输入
-        pred = pred.permute(0, 2, 1).contiguous().view(-1, pred.size(1))
-        target = target.view(-1)
-        loss = F.cross_entropy(pred, target, weight=self.weight)
         return loss
 
 # 自适应Focal loss函数
