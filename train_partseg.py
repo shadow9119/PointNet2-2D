@@ -260,9 +260,9 @@ def main(args):
         log_string(f'Loss function: Focal Loss (gamma={args.focal_gamma})')
 
     elif args.loss_type == 'adaptive_focal':
-        # 选项 3: 自适应 Focal Loss (推荐，无需调参)
-        criterion = MODEL.AdaptiveFocalLoss(gamma=args.focal_gamma).to(device)
-        log_string(f'Loss function: Adaptive Focal Loss (gamma={args.focal_gamma})')
+        # 选项 3: 完全自适应 Focal Loss (推荐，无需调参)
+        criterion = MODEL.AdaptiveFocalLoss().to(device)
+        log_string('Loss function: Adaptive Focal Loss (fully adaptive, no hyperparameters)')
 
     else:
         raise ValueError(f'Unknown loss type: {args.loss_type}')
@@ -499,7 +499,7 @@ def main(args):
                 break
 
         # save checkpoints 保存检查点
-        if (epoch + 1) % 50 == 0 and epoch != (args.epoch+start_epoch-1):
+        if (epoch + 1) % 5 == 0 and epoch != (args.epoch+start_epoch-1):
             logger.info('Save checkpoint at epoch %d...' % (epoch+1))
             save_ckptpath = str(checkpoints_dir) + '/ckpt_' + str(epoch + 1) + '.pth'
             log_string('Saving at %s' % save_ckptpath)

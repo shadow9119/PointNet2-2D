@@ -12,7 +12,7 @@ from datetime import datetime
 # [关键] 设置可用的 GPU ID 列表
 # 脚本会自动利用这些 GPU 并行运行实验。
 # 例如: ['0'] (单卡), ['0', '1'] (双卡), ['0', '1', '2', '3'] (四卡)
-AVAILABLE_GPUS = ['0', '1', '2', '3','4', '5','6', '7'] 
+AVAILABLE_GPUS = ['0'] 
 
 # 项目路径配置
 SOURCEDIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,40 +28,88 @@ BASE_CONFIG = {
     # 训练参数
     'model': 'pointnet2_part_seg_msg', # 模型架构
     'epoch_num': 50,      # 建议设置为 100-200 以保证收敛
-    'batch_size': 1,       # 默认Batch Size
     'learning_rate': 0.001,
-    'lr_decay': 0.8,
+    'lr_decay': 0.9,
     'decay_rate': 1e-3,
-    'step_size': 20,
+    'step_size': 5,
     'loss_weight': 1.0,
-    'npoint': None,        # None 代表使用全量点云
     
     # 测试参数
+    'test_npoint': 4096,   # 测试时的点数，None 则使用 npoint 的值
     'test_batch_size': 1,
     'threshold': 0.5,
     'num_votes': 10,       # 测试时的投票数
-    'test_ckpt': 'best_model.pth' # 假设代码保存的最优模型名为 best_model.pth，如果不是请改为 'model.pth'
+    'test_ckpt': 'model.pth',
+    'skip_test': True,    # 如果为 True，则只训练不测试
 }
 
 # ==============================================================================
 # 2. 消融实验列表 (在此处定义你想跑的所有实验组合)
 # ==============================================================================
 # 每一个字典代表一个实验，未指定的参数将使用 BASE_CONFIG 中的默认值
-EXPERIMENT_LIST = [
-    # --- 第一组：损失函数消融实验 ---
+EXPERIMENT_LIST = [    
+    # =================================================================
+    # 组 1: 全量基准 (Baseline)
+    # 极端测试：不丢弃任何信息，但 Batch Size=1 极其不稳定，用于设立“理论上限”
+    # =================================================================
     {
-        'name': 'Exp01_Loss_NLL_Baseline',
-        'loss_type': 'nll',
-    },
-    {
-        'name': 'Exp02_Loss_Focal_Gamma2',
-        'loss_type': 'focal',
-        'focal_gamma': 2.0,
-    },
-    {
-        'name': 'Exp03_Loss_AdaptiveFocal',
+        'name': 'Exp01_npoint[None]_batchsize[1]',
         'loss_type': 'adaptive_focal',
-        'focal_gamma': 2.0,
+        'npoint': None,        
+        'batch_size': 1,       
+    },
+
+    # =================================================================
+    # 组 2: 高保真组 (High Fidelity)
+    # 覆盖最大文件 (55k)，Padding 到 64k。
+    # 显存压力巨大，Batch Size 只能很小。
+    # =================================================================
+    {
+        'name': 'Exp02_npoint[65536]_batchsize[2]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 65536,
+        'batch_size': 1,       
+    },
+    {
+        'name': 'Exp03_npoint[32768]_batchsize[4]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 32768,       # 约为最大文件的一半
+        'batch_size': 2,       
+    },
+
+    # =================================================================
+    # 组 3: 统计平均组 (Statistical Average) - 重点关注
+    # 16384 最接近你的平均点数 (15003)，理论上是信息与效率的最佳平衡点。
+    # =================================================================
+    {
+        'name': 'Exp04_npoint[16384]_batchsize[8]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 16384,
+        'batch_size': 4,       
+    },
+
+    # =================================================================
+    # 组 4: 效率优先组 (High Efficiency / Max Batch Size)
+    # [补齐部分]：从这里开始，点数减少，Batch Size 达到上限 16。
+    # 这部分旨在验证：是否牺牲一部分点云细节，换取更稳定的 BN 层统计(BS=16)，能得到更好的结果？
+    # =================================================================
+    {
+        'name': 'Exp05_npoint[8192]_batchsize[16]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 8192,        # [补齐] 16k的一半，通常跑得很快且效果不错
+        'batch_size': 8,      # 达到你设定的最大 BS
+    },
+    {
+        'name': 'Exp06_npoint[4096]_batchsize[16]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 4096,        # [补齐] 进一步降低分辨率
+        'batch_size': 12,      
+    },
+    {
+        'name': 'Exp07_npoint[2048]_batchsize[16]',
+        'loss_type': 'adaptive_focal',
+        'npoint': 2048,        # [修正] 你的最小文件是559，2048是一个比较安全的下界
+        'batch_size': 16,       
     },
 
     # # --- 第二组：点云密度与Batch Size实验 ---
@@ -136,49 +184,65 @@ def run_single_experiment(exp_config):
 
     try:
         # ==================== 阶段 2.1: 训练模型 ====================
-        train_cmd = [
-            'python', config['train_file'],
-            '--model', config['model'],
-            '--epoch', str(config['epoch_num']),
-            '--batch_size', str(config['batch_size']),
-            '--learning_rate', str(config['learning_rate']),
-            '--data_root', DATA_ROOT,
-            '--conf', # 假设这是一个布尔flag
-            '--loss_weight', str(config['loss_weight']),
-            '--lr_decay', str(config['lr_decay']),
-            '--step_size', str(config['step_size']),
-            '--decay_rate', str(config['decay_rate']),
-            '--gpu', gpu_id,
-            '--log_dir_name', exp_name,  # 强制指定日志目录名，方便后续测试查找
-            '--loss_type', config.get('loss_type', 'nll')
-        ]
-
-        # 添加条件参数
-        if 'focal_gamma' in config:
-            train_cmd.extend(['--focal_gamma', str(config['focal_gamma'])])
-        if config.get('npoint') is not None:
-            train_cmd.extend(['--npoint', str(config['npoint'])])
-        if config.get('ckpt'):
-            train_cmd.extend(['--ckpt', config['ckpt']])
-
-        # 执行训练
-        with open(exp_log_file, 'w') as log_f:
-            log_f.write(f"========== Training Start: {datetime.now()} ==========\n")
-            log_f.flush()
+        
+        # 检查模型是否已存在
+        model_checkpoint_path = os.path.join(SOURCEDIR, 'log', 'part_seg', exp_name, 'checkpoints', 'model.pth')
+        model_exists = os.path.exists(model_checkpoint_path)
+        
+        if model_exists:
+            write_summary(f"    检测到已有模型: {model_checkpoint_path}，跳过训练，直接执行测试")
+        else:
+            write_summary(f"    未检测到模型，开始训练...")
             
-            # 运行命令，将 stdout 和 stderr 都重定向到 log 文件
-            process = subprocess.run(train_cmd, stdout=log_f, stderr=subprocess.STDOUT, cwd=SOURCEDIR)
-            
-            if process.returncode != 0:
-                raise Exception("训练脚本返回非零状态码，请查看详细日志。")
+            train_cmd = [
+                'python', config['train_file'],
+                '--model', config['model'],
+                '--epoch', str(config['epoch_num']),
+                '--batch_size', str(config['batch_size']),
+                '--learning_rate', str(config['learning_rate']),
+                '--data_root', DATA_ROOT,
+                '--conf', # 假设这是一个布尔flag
+                '--loss_weight', str(config['loss_weight']),
+                '--lr_decay', str(config['lr_decay']),
+                '--step_size', str(config['step_size']),
+                '--decay_rate', str(config['decay_rate']),
+                '--gpu', gpu_id,
+                '--log_dir_name', exp_name,  # 强制指定日志目录名，方便后续测试查找
+                '--loss_type', config.get('loss_type', 'nll')
+            ]
 
-        write_summary(f"--- [训练完成] 实验: {exp_name}")
+            # 添加条件参数
+            if 'focal_gamma' in config:
+                train_cmd.extend(['--focal_gamma', str(config['focal_gamma'])])
+            if config.get('npoint') is not None:
+                train_cmd.extend(['--npoint', str(config['npoint'])])
+            
+            if config.get('ckpt'):
+                train_cmd.extend(['--ckpt', config['ckpt']])
+
+            # 执行训练
+            with open(exp_log_file, 'w') as log_f:
+                log_f.write(f"========== Training Start: {datetime.now()} ==========\n")
+                log_f.flush()
+                
+                # 运行命令，将 stdout 和 stderr 都重定向到 log 文件
+                process = subprocess.run(train_cmd, stdout=log_f, stderr=subprocess.STDOUT, cwd=SOURCEDIR)
+                
+                if process.returncode != 0:
+                    raise Exception("训练脚本返回非零状态码，请查看详细日志。")
+
+            write_summary(f"--- [训练完成] 实验: {exp_name}")
 
         # ==================== 阶段 2.2: 测试模型 ====================
         
+        # 检查是否跳过测试
+        if config.get('skip_test', False):
+            write_summary(f"### [跳过测试] 实验: {exp_name} | 根据配置跳过测试阶段")
+            return
+        
         # 确定训练生成的日志目录路径
-        # 通常是 log/part_seg/{exp_name}，根据你的原始代码逻辑推断
-        trained_log_dir = os.path.join('part_seg', exp_name)
+        # 直接使用实验名称，test_partseg.py 会自动拼接完整路径
+        trained_log_dir = exp_name
         
         test_cmd = [
             'python', config['test_file'],
@@ -189,11 +253,21 @@ def run_single_experiment(exp_config):
             '--ckpt', config['test_ckpt'],
             '--threshold', str(config['threshold']),
             '--num_votes', str(config['num_votes']),
-            '--gpu', gpu_id
+            '--gpu', gpu_id,
+            '--exp_name', exp_name  # 传递实验名称用于CSV文件命名
         ]
 
-        if config.get('npoint') is not None:
-            test_cmd.extend(['--num_point', str(config['npoint'])])
+        # 测试时优先使用 test_npoint
+        # 如果配置中明确设置了 test_npoint（包括设为None），就使用该值
+        # 只有当配置中没有 test_npoint 键时，才回退到使用 npoint
+        if 'test_npoint' in config:
+            test_npoint = config['test_npoint']
+        else:
+            test_npoint = config.get('npoint')
+        
+        # 只有当 test_npoint 不为 None 时才添加 --num_point 参数
+        if test_npoint is not None:
+            test_cmd.extend(['--num_point', str(test_npoint)])
 
         # 执行测试
         with open(exp_log_file, 'a') as log_f: # 追加模式

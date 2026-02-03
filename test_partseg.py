@@ -79,6 +79,7 @@ def parse_args():
     parser.add_argument('--data_root', type=str, required=True, help='data root file')
     parser.add_argument('--output', action='store_false', help='output test results')
     parser.add_argument('--threshold', type=float, default=0.5, help='probability threshold')
+    parser.add_argument('--exp_name', type=str, default=None, help='experiment name for CSV output')
     return parser.parse_args()
 
 def main(args):
@@ -227,9 +228,6 @@ def main(args):
                         'F1 Score': f1
                     })
                     
-                    # 输出每个文件的指标到控制台
-                    log_string(f'文件: {current_filename} - P: {precision:.5f}, R: {recall:.5f}, F: {f1:.5f}')
-                    
                     # 清理循环中的变量
                     del cur_points, output_points, segp, segl
                 
@@ -255,30 +253,48 @@ def main(args):
             gc.collect()
             torch.cuda.empty_cache()
 
-        # 计算并保存全局指标
-        precision = tp_acc / (tp_acc + fp_acc) if (tp_acc + fp_acc) > 0 else 1.0
-        recall = tp_acc / (tp_acc + fn_acc) if (tp_acc + fn_acc) > 0 else 1.0
-        f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
-        
-        test_metrics['Precision'] = precision
-        test_metrics['Recall'] = recall
-        test_metrics['F1 score'] = f1
-        
-        log_string('Precision: %.5f' % test_metrics['Precision'])
-        log_string('Recall: %.5f' % test_metrics['Recall'])
-        log_string('F1 score: %.5f' % test_metrics['F1 score'])
-        
-        # 保存结果到CSV
+        # 计算并保存全局指标（基于文件级别的平均）
         results_df = pd.DataFrame(results)
+        
+        # 计算各文件指标的平均值
+        avg_precision = results_df['Precision'].mean()
+        avg_recall = results_df['Recall'].mean()
+        avg_f1 = results_df['F1 Score'].mean()
+        
+        test_metrics['Precision'] = avg_precision
+        test_metrics['Recall'] = avg_recall
+        test_metrics['F1 score'] = avg_f1
+        
+        # 打印全局平均指标到控制台和日志
+        print('\n' + '='*60)
+        print('[Global Average Metrics]')
+        print(f'Precision: {avg_precision:.5f}')
+        print(f'Recall: {avg_recall:.5f}')
+        print(f'F1 Score: {avg_f1:.5f}')
+        print('='*60 + '\n')
+        
+        log_string('Precision (avg): %.5f' % test_metrics['Precision'])
+        log_string('Recall (avg): %.5f' % test_metrics['Recall'])
+        log_string('F1 score (avg): %.5f' % test_metrics['F1 score'])
+        
+        # 添加全局平均指标行
         global_metrics = {
-            'Filename': '[Global Metrics]',
-            'Precision': test_metrics['Precision'],
-            'Recall': test_metrics['Recall'],
-            'F1 Score': test_metrics['F1 score']
+            'Filename': '[Global Average]',
+            'Precision': avg_precision,
+            'Recall': avg_recall,
+            'F1 Score': avg_f1
         }
         results_df = pd.concat([results_df, pd.DataFrame([global_metrics])], ignore_index=True)
-        results_df.to_csv(os.path.join(experiment_dir, 'per_file_metrics.csv'), index=False)
-        log_string(f'每个文件的指标 + 全局指标已保存至: per_file_metrics.csv')
+        
+        # 保存CSV文件，文件名使用实验名称
+        if args.exp_name:
+            csv_filename = f'{args.exp_name}.csv'
+        else:
+            csv_filename = 'per_file_metrics.csv'
+        
+        csv_path = os.path.join(experiment_dir, csv_filename)
+        results_df.to_csv(csv_path, index=False)
+        log_string(f'结果已保存至: {csv_filename}')
 
 if __name__ == '__main__':
     args = parse_args()

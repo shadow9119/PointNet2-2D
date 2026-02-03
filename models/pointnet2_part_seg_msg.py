@@ -93,16 +93,19 @@ class FocalLoss(nn.Module):
         loss = F.nll_loss(logpt, target, self.weight)
         return loss
 
-# 自适应Focal loss函数
+# 完全自适应Focal loss函数
 class AdaptiveFocalLoss(nn.Module):
     """
-    自适应 Focal Loss
+    完全自适应 Focal Loss
+    - alpha (类别权重): 根据当前batch的类别分布动态计算
+    - gamma (难易样本权重): 根据类别不平衡程度动态计算
     适配模型的 Log_Softmax 输出
     """
-    def __init__(self, gamma=2.0, eps=1e-8):
+    def __init__(self, eps=1e-8, gamma_min=1.0, gamma_max=100.0):
         super(AdaptiveFocalLoss, self).__init__()
-        self.gamma = gamma
         self.eps = eps
+        self.gamma_min = gamma_min  # gamma的最小值
+        self.gamma_max = gamma_max  # gamma的最大值
 
     def forward(self, pred, target):
         """
@@ -113,38 +116,44 @@ class AdaptiveFocalLoss(nn.Module):
         probs = torch.exp(pred)
         
         # 2. 动态计算 alpha (基于当前 Batch 的类别分布)
-        # 注意：这里假设是二分类或多分类，以下逻辑通用
-        # 获取当前 batch 中每个类别的数量
         C = pred.shape[1]
         
-        # 初始化 alpha
-        alpha = torch.zeros_like(probs)
+        # 统计每个类别的样本数
+        class_counts = torch.bincount(target, minlength=C).float()
+        total_count = target.numel()
         
-        # 计算总样本数
-        total_count = target.numel() + self.eps
+        # 计算类别频率
+        class_freq = class_counts / (total_count + self.eps)
         
-        # 针对每个类别计算反向频率权重
-        for c in range(C):
-            # 统计类别 c 的样本数
-            count_c = (target == c).sum().float()
-            # 简单反向频率：类别越少，权重越大
-            # 权重 = (总数 - 该类数量) / 总数
-            # 对于二分类：类0权重 = 类1数量占比；类1权重 = 类0数量占比
-            weight_c = (total_count - count_c) / total_count
-            
-            # 将该权重赋予对应的列
-            alpha[:, c] = weight_c
-
-        # 3. 获取目标类别的概率 pt 和权重 at
-        # gather 用于提取 target 对应位置的概率和权重
+        # 使用反向频率作为alpha权重：频率越低，权重越高
+        # 归一化使得权重和为类别数
+        alpha_weights = (1.0 - class_freq) / (1.0 - class_freq).sum() * C
+        alpha_weights = torch.clamp(alpha_weights, min=0.1, max=10.0)  # 限制权重范围
+        
+        # 将alpha权重扩展到每个样本
+        alpha = alpha_weights[target]
+        
+        # 3. 动态计算 gamma (基于类别不平衡程度)
+        # 计算类别不平衡比例：最多类别数 / 最少类别数
+        max_count = class_counts.max()
+        min_count = class_counts[class_counts > 0].min() if (class_counts > 0).sum() > 0 else 1.0
+        imbalance_ratio = max_count / (min_count + self.eps)
+        
+        # 根据不平衡比例动态调整gamma
+        # 不平衡越严重，gamma越大，更关注难分类样本
+        # 使用对数缩放避免gamma过大
+        gamma = self.gamma_min + (self.gamma_max - self.gamma_min) * torch.tanh(torch.log(imbalance_ratio) / 3.0)
+        gamma = torch.clamp(gamma, self.gamma_min, self.gamma_max)
+        
+        # 4. 获取目标类别的概率 pt
         pt = probs.gather(1, target.unsqueeze(1)).squeeze(1)
-        at = alpha.gather(1, target.unsqueeze(1)).squeeze(1)
         
         # 获取目标类别的 log_pt (直接从 pred 取，避免重复 log 运算导致数值不稳定)
         log_pt = pred.gather(1, target.unsqueeze(1)).squeeze(1)
 
-        # 4. 计算 Focal Loss
+        # 5. 计算完全自适应的 Focal Loss
         # 公式: -alpha * (1 - pt)^gamma * log(pt)
-        loss = -at * (1 - pt) ** self.gamma * log_pt
+        # 其中 alpha 和 gamma 都是动态计算的
+        loss = -alpha * (1 - pt) ** gamma * log_pt
 
         return loss.mean()
