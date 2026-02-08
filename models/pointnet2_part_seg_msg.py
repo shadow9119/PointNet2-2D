@@ -64,11 +64,20 @@ class get_model(nn.Module): # get_model的父类是nn.Module
 
 # 计算负对数似然损失（Negative Log Likelihood Loss）
 class get_loss(nn.Module):
-    def __init__(self):
+    def __init__(self, weight=None):
         super(get_loss, self).__init__()
+        # 如果 weight 是 tensor，将其注册为 buffer（会自动跟随模型移动到正确的设备）
+        if weight is not None and isinstance(weight, torch.Tensor):
+            self.register_buffer('weight', weight)
+        else:
+            self.weight = weight
 
-    def forward(self, pred, target, weight=None):
-        total_loss = F.nll_loss(pred, target, weight=weight)  # 负对数似然损失函数，计算的是预测概率的对数损失，weight是不同类别的损失加权，损失值越小，表示模型的预测与真实标签越接近
+    def forward(self, pred, target):
+        # 正确处理weight参数：当为None时，不传递weight参数
+        if self.weight is None:
+            total_loss = F.nll_loss(pred, target)
+        else:
+            total_loss = F.nll_loss(pred, target, weight=self.weight)
 
         return total_loss
 
@@ -76,11 +85,16 @@ class get_loss(nn.Module):
 class FocalLoss(nn.Module):
     '''
     Multi-class Focal loss implementation
+    gamma=0时，退化为NLL；否则，均进行了focal加权
     '''
-    def __init__(self, gamma=2, weight=None):
+    def __init__(self, gamma=2.0, weight=None):
         super(FocalLoss, self).__init__()
         self.gamma = gamma
-        self.weight = weight
+        # 如果 weight 是 tensor，将其注册为 buffer（会自动跟随模型移动到正确的设备）
+        if weight is not None and isinstance(weight, torch.Tensor):
+            self.register_buffer('weight', weight)
+        else:
+            self.weight = weight
 
     def forward(self, input, target):
         """
@@ -90,9 +104,12 @@ class FocalLoss(nn.Module):
         logpt = input
         pt = torch.exp(logpt)
         logpt = (1-pt)**self.gamma * logpt
-        loss = F.nll_loss(logpt, target, self.weight)
+        # 正确处理weight参数：当为None时，不传递weight参数
+        if self.weight is None:
+            loss = F.nll_loss(logpt, target)
+        else:
+            loss = F.nll_loss(logpt, target, weight=self.weight)
         return loss
-
 # 完全自适应Focal loss函数
 class AdaptiveFocalLoss(nn.Module):
     """
@@ -101,11 +118,13 @@ class AdaptiveFocalLoss(nn.Module):
     - gamma (难易样本权重): 根据类别不平衡程度动态计算
     适配模型的 Log_Softmax 输出
     """
-    def __init__(self, eps=1e-8, gamma_min=1.0, gamma_max=100.0):
+    def __init__(self, eps=1e-8, gamma_max=20.0, alpha_max=10.0):
         super(AdaptiveFocalLoss, self).__init__()
         self.eps = eps
-        self.gamma_min = gamma_min  # gamma的最小值
+        self.gamma_min = 1.0  # gamma的最小值
         self.gamma_max = gamma_max  # gamma的最大值
+        self.alpha_min = 0.1  # alpha的最小值
+        self.alpha_max = alpha_max  # alpha的最大值
 
     def forward(self, pred, target):
         """
@@ -128,7 +147,7 @@ class AdaptiveFocalLoss(nn.Module):
         # 使用反向频率作为alpha权重：频率越低，权重越高
         # 归一化使得权重和为类别数
         alpha_weights = (1.0 - class_freq) / (1.0 - class_freq).sum() * C
-        alpha_weights = torch.clamp(alpha_weights, min=0.1, max=10.0)  # 限制权重范围
+        alpha_weights = torch.clamp(alpha_weights, min=self.alpha_min, max=self.alpha_max)  # 限制权重范围
         
         # 将alpha权重扩展到每个样本
         alpha = alpha_weights[target]

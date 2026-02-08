@@ -42,13 +42,14 @@ torch.Tensor.__repr__ = custom_repr
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_points(index, points, pred_choice, dataset_name, save_path):
+def plot_points(index, points, pred_choice, dataset_name, save_path, exp_name=None):
     """
     index: 当前批次的图像编号，用于命名图像文件。
     points: 当前批次的点云数据 (3, N)，N 是点云数量。
     pred_choice: 当前批次的预测标签 (N, )。
     dataset_name: 当前数据集的名称（如 'train'）。
     save_path: 图像保存的文件夹路径。
+    exp_name: 实验名称，用于组织目录结构。
     """
     # 将点云数据和预测标签转换为 numpy 格式
     points_np = points.cpu().numpy().T  # 形状变为 (N, 3)
@@ -147,7 +148,6 @@ def parse_args():
     parser.add_argument('--ckpt', type=str, default=None, help='checkpoint path')
     parser.add_argument('--decay_rate', type=float, default=1e-4, help='weight decay')
     parser.add_argument('--npoint', type=int, default=None, help='point Number (default: None, use all points)')  # 修改为默认 None
-    parser.add_argument('--conf', action='store_true', default=False, help='use confidence level')
     parser.add_argument('--step_size', type=int, default=20, help='decay step for lr decay')
     parser.add_argument('--lr_decay', type=float, default=0.5, help='decay rate for lr decay')
     parser.add_argument('--data_root', type=str, required=True, help='data root file')
@@ -156,7 +156,11 @@ def parse_args():
     parser.add_argument('--loss_type', type=str, default='adaptive_focal', choices=['nll', 'focal', 'adaptive_focal'],
                         help='loss function type: nll (negative log likelihood), focal (Focal Loss), adaptive_focal (Adaptive Focal Loss)')
     parser.add_argument('--focal_gamma', type=float, default=2.0, help='gamma parameter for Focal Loss')
+    parser.add_argument('--focal_weight', type=str, default='0.1', help='weight parameter for Focal Loss (use "None" for no weight)')
+    parser.add_argument('--gamma_max', type=float, default=100.0, help='maximum gamma value for Adaptive Focal Loss')
+    parser.add_argument('--alpha_max', type=float, default=10.0, help='maximum alpha value for Adaptive Focal Loss')
     parser.add_argument('--log_dir_name', type=str, default=None, help='custom log directory name (default: use current date)')
+    parser.add_argument('--nll_weight', type=str, default='None', help='weight parameter for NLL loss (use "None" for no weight)')
 
     return parser.parse_args()
 
@@ -216,20 +220,15 @@ def main(args):
     log_string('PARAMETER ...') # 同时打印到 model名.txt 日志文件和控制台
     log_string(args)
 
-    # tensorboard set-up
-    # 在 [./runs/日期(年月日时分秒)/]文件夹下，写入 TensorBoard 日志
-    writer = SummaryWriter(os.path.join('runs', timestr))
-    log_string('TensorBoard logs will be saved to: %s' % os.path.join('runs', timestr))
-
     root = args.data_root  # 获得根目录路径
 
-    TRAIN_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='train', conf_channel=args.conf) # 创建训练数据集 TRAIN_DATASET，获取训练集的文件目录表
+    TRAIN_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='train') # 创建训练数据集 TRAIN_DATASET，获取训练集的文件目录表
     trainDataLoader = torch.utils.data.DataLoader(TRAIN_DATASET, batch_size=args.batch_size, shuffle=True,
                                                   num_workers=3, drop_last=True) # 在训练过程中按批次加载数据，batch_size指定每个批次的数据量
                                                                                     # shuffle=True 表示在每个 epoch 开始时对数据进行洗牌。
                                                                                     # num_workers=3 指定使用 3 个子进程来加载数据，以加速数据读取。
                                                                                     # drop_last=True 表示如果最后一个批次的样本不足一个批次的大小，则丢弃它。
-    VAL_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='val', conf_channel=args.conf)
+    VAL_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='val')
     valDataLoader = torch.utils.data.DataLoader(VAL_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=3)
     log_string("train_partseg中，已读入train集个数: %d" % len(TRAIN_DATASET))
     log_string("train_partseg中，已读入val集个数:  %d" % len(VAL_DATASET))
@@ -243,26 +242,50 @@ def main(args):
     shutil.copy('models/%s.py' % args.model, str(exp_dir))
     shutil.copy('models/pointnet2_utils.py', str(exp_dir))
 
-    classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device)
+    classifier = MODEL.get_model(num_part).to(device)
 
     # ================= 损失函数选择区 =================
 
     log_string(f'Using loss function: {args.loss_type}')
 
+    # 参数类型转换：将字符串参数转换为正确的类型
+    def parse_weight_param(weight_str):
+        if weight_str.lower() == 'none':
+            return None
+        
+        # 尝试使用 json.loads 解析（支持列表和数字）
+        try:
+            import json
+            parsed_value = json.loads(weight_str)
+            
+            # 如果是列表，转换为 tensor
+            if isinstance(parsed_value, list):
+                return torch.tensor(parsed_value, dtype=torch.float32).to(device)
+            # 如果是单个数字，直接返回 float
+            elif isinstance(parsed_value, (int, float)):
+                return float(parsed_value)
+            else:
+                raise ValueError(f"Invalid weight parameter format: {weight_str}")
+        except (json.JSONDecodeError, ValueError) as e:
+            raise ValueError(f"Invalid weight parameter: {weight_str}. Expected 'None', a float, or a list like '[0.9,0.1]'. Error: {str(e)}")
+    
+    focal_weight = parse_weight_param(args.focal_weight)
+    nll_weight = parse_weight_param(args.nll_weight)
+
     if args.loss_type == 'nll':
         # 选项 1: 负对数似然损失 (Baseline)
-        criterion = MODEL.get_loss().to(device)
-        log_string('Loss function: Negative Log Likelihood (NLL)')
+        criterion = MODEL.get_loss(weight=nll_weight).to(device)
+        log_string(f'Loss function: Negative Log Likelihood (NLL), weight={nll_weight}')
 
     elif args.loss_type == 'focal':
         # 选项 2: 固定权重的 Focal Loss
-        criterion = MODEL.FocalLoss(gamma=args.focal_gamma).to(device)
-        log_string(f'Loss function: Focal Loss (gamma={args.focal_gamma})')
+        criterion = MODEL.FocalLoss(gamma=args.focal_gamma, weight=focal_weight).to(device)
+        log_string(f'Loss function: Focal Loss (gamma={args.focal_gamma}, weight={focal_weight})')
 
     elif args.loss_type == 'adaptive_focal':
         # 选项 3: 完全自适应 Focal Loss (推荐，无需调参)
-        criterion = MODEL.AdaptiveFocalLoss().to(device)
-        log_string('Loss function: Adaptive Focal Loss (fully adaptive, no hyperparameters)')
+        criterion = MODEL.AdaptiveFocalLoss(gamma_max=args.gamma_max, alpha_max=args.alpha_max).to(device)
+        log_string(f'Loss function: Adaptive Focal Loss (gamma_max={args.gamma_max}, alpha_max={args.alpha_max})')
 
     else:
         raise ValueError(f'Unknown loss type: {args.loss_type}')
@@ -286,10 +309,25 @@ def main(args):
         model_state_dict = {k.replace('module.', ''): v for k, v in checkpoint['model_state_dict'].items()}
         classifier.load_state_dict(model_state_dict)
         log_string('Use pretrain model')
+        log_string('Resume training from epoch %d' % start_epoch)
     except:
         log_string('No existing model, starting training from scratch...')
         start_epoch = 0
         classifier = classifier.apply(weights_init)
+
+    # tensorboard set-up
+    # 在 [./runs/日期(年月日时分秒)/]文件夹下，写入 TensorBoard 日志
+    # 续训时使用 purge_step 参数清理旧的事件文件中超出续训起点的数据
+    tensorboard_dir = os.path.join('runs', timestr)
+    if start_epoch > 0:
+        # 续训时，清理 start_epoch 之后的所有旧数据
+        writer = SummaryWriter(tensorboard_dir, purge_step=start_epoch)
+        log_string('TensorBoard: Resume from epoch %d, purging data after step %d' % (start_epoch, start_epoch))
+    else:
+        # 首次训练，不需要清理
+        writer = SummaryWriter(tensorboard_dir)
+        log_string('TensorBoard: Starting fresh training')
+    log_string('TensorBoard logs will be saved to: %s' % tensorboard_dir)
 
     # 初始化优化器Adam
     if args.optimizer == 'Adam':
@@ -362,8 +400,11 @@ def main(args):
             # max(1)[0]返回最大值，max(1)[1]返回索引，在我们的例子中是类号
 
             ''' 绘制并保存训练集点云图像 '''
-            # 设置保存路径
-            save_path = os.path.join(BASE_DIR, 'results', 'train')
+            # 设置保存路径，使用基于实验名称的目录结构
+            if args.log_dir_name:
+                save_path = os.path.join(BASE_DIR, 'results', args.log_dir_name, 'train')
+            else:
+                save_path = os.path.join(BASE_DIR, 'results', 'train')
             os.makedirs(save_path, exist_ok=True)
             for j in range(points.shape[0]):  # 遍历每个样本
                 # 计算样本在整个数据集中的索引
@@ -372,7 +413,7 @@ def main(args):
                     # 确保 pred_choice 的分割方式正确
                     start_idx = j * points.shape[2]  # points.shape[2] 是点云数量 N
                     end_idx = (j + 1) * points.shape[2]
-                    plot_points(global_index, points[j], pred_choice[start_idx:end_idx], 'train', save_path)
+                    plot_points(global_index, points[j], pred_choice[start_idx:end_idx], 'train', save_path, args.log_dir_name)
 
 
             # calculate confusion metric  计算混淆度
@@ -384,7 +425,12 @@ def main(args):
             fp += cm[0, 1]
             fn += cm[1, 0]
 
-            loss = criterion(seg_pred, target)
+            # 根据损失类型传递不同的参数
+            if args.loss_type == 'nll':
+                loss = criterion(seg_pred, target)
+            else:
+                loss = criterion(seg_pred, target)
+            
             loss_acc.append(loss.detach().item())
             loss.backward()
             optimizer.step()
@@ -422,8 +468,11 @@ def main(args):
                 pred_choice = seg_pred.data.max(1)[1]
 
                 ''' 绘制并保存验证集点云图像 '''
-                # 设置保存路径
-                save_path = os.path.join(BASE_DIR, 'results', 'val')
+                # 设置保存路径，使用基于实验名称的目录结构
+                if args.log_dir_name:
+                    save_path = os.path.join(BASE_DIR, 'results', args.log_dir_name, 'val')
+                else:
+                    save_path = os.path.join(BASE_DIR, 'results', 'val')
                 os.makedirs(save_path, exist_ok=True)
                 for j in range(points.shape[0]):  # 遍历每个样本
                     # 计算样本在整个数据集中的索引
@@ -432,7 +481,7 @@ def main(args):
                         # 确保 pred_choice 的分割方式正确
                         start_idx = j * points.shape[2]  # points.shape[2] 是点云数量 N
                         end_idx = (j + 1) * points.shape[2]
-                        plot_points(global_index, points[j], pred_choice[start_idx:end_idx], 'val', save_path)
+                        plot_points(global_index, points[j], pred_choice[start_idx:end_idx], 'val', save_path, args.log_dir_name)
 
 
 
@@ -529,7 +578,7 @@ def main(args):
     
     # 关闭TensorBoard写入器
     writer.close()
-    log_string('TensorBoard logs saved to: %s' % os.path.join('runs', timestr))
+    log_string('TensorBoard logs saved to: %s' % tensorboard_dir)
 
     # # 将模型输入测试集测试
     # logger.info('Test model...')

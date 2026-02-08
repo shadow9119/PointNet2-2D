@@ -24,7 +24,7 @@ sys.path.append(os.path.join(ROOT_DIR, 'models'))
 seg_classes = {'signal': [0, 1]}
 seg_label_to_cat = {label: cat for cat in seg_classes for label in seg_classes[cat]}
 
-def plot_points(global_index, points, pred_choice, dataset_name, filename, precision=None, recall=None, f1=None):
+def plot_points(global_index, points, pred_choice, dataset_name, filename, precision=None, recall=None, f1=None, exp_name=None):
     pred_choice = np.array(pred_choice, dtype=int)
     color_map = {0: [0.93, 0.69, 0.13], 1: [0.49, 0.18, 0.56]}
     colors = np.array([color_map[label] for label in pred_choice])
@@ -46,7 +46,11 @@ def plot_points(global_index, points, pred_choice, dataset_name, filename, preci
         plt.Line2D([0], [0], marker='o', color='w', label='Signal', markersize=5, markerfacecolor=[0.49, 0.18, 0.56])
     ], title="Classes")
 
-    save_path = os.path.join(BASE_DIR, 'results/test/')
+    # 修改保存路径，使用基于实验名称的目录结构
+    if exp_name:
+        save_path = os.path.join(BASE_DIR, 'results', exp_name, 'test/')
+    else:
+        save_path = os.path.join(BASE_DIR, 'results/test/')
     os.makedirs(save_path, exist_ok=True)
     base_filename = os.path.splitext(filename)[0]
     output_path = os.path.join(save_path, f'{base_filename}.svg')
@@ -72,9 +76,9 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=24, help='batch size in testing')
     parser.add_argument('--gpu', type=str, default='0', help='specify gpu device')
     parser.add_argument('--num_point', type=int, default=None, help='point Number, set None for all points')
+    parser.add_argument('--max_point', type=int, default=50000, help='maximum point number to avoid OOM, points will be randomly sampled if exceeded')
     parser.add_argument('--log_dir', type=str, required=True, help='experiment root')
     parser.add_argument('--ckpt', type=str, default=None, help='model checkpoint')
-    parser.add_argument('--conf', action='store_true', default=False, help='use confidence level')
     parser.add_argument('--num_votes', type=int, default=3, help='aggregate segmentation scores with voting')
     parser.add_argument('--data_root', type=str, required=True, help='data root file')
     parser.add_argument('--output', action='store_false', help='output test results')
@@ -106,18 +110,25 @@ def main(args):
     log_string(args)
 
     if args.output:
-        if args.ckpt:
-            output_dir = Path(experiment_dir + '/output_' + str(args.ckpt).split('.')[0] + '_' + str(args.threshold))
+        # 修改输出目录创建逻辑，使用基于实验名称的目录结构
+        if args.exp_name:
+            if args.ckpt:
+                output_dir = Path(os.path.join('results', args.exp_name, 'output_' + str(args.ckpt).split('.')[0] + '_' + str(args.threshold)))
+            else:
+                output_dir = Path(os.path.join('results', args.exp_name, 'output_' + str(args.threshold)))
         else:
-            output_dir = Path(experiment_dir + '/output_' + str(args.threshold))
+            if args.ckpt:
+                output_dir = Path(experiment_dir + '/output_' + str(args.ckpt).split('.')[0] + '_' + str(args.threshold))
+            else:
+                output_dir = Path(experiment_dir + '/output_' + str(args.threshold))
 
         if not output_dir.exists():
-            output_dir.mkdir()
+            output_dir.mkdir(parents=True)
 
     root = args.data_root
 
     # 减少num_workers以降低内存使用
-    TEST_DATASET = PartNormalDataset(root=root, npoints=args.num_point, split='test', conf_channel=args.conf)
+    TEST_DATASET = PartNormalDataset(root=root, npoints=args.num_point, split='test')
     testDataLoader = torch.utils.data.DataLoader(TEST_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=2)
     log_string("test_partseg中，已读入test集个数: %d" % len(TEST_DATASET))
     
@@ -127,7 +138,7 @@ def main(args):
     '''MODEL LOADING'''
     model_name = os.listdir(os.path.join(experiment_dir, 'logs'))[0].split('.')[0]
     MODEL = importlib.import_module(model_name)
-    classifier = MODEL.get_model(num_part, conf_channel=args.conf).to(device)
+    classifier = MODEL.get_model(num_part).to(device)
     
     # 加载检查点时清理缓存
     if args.ckpt:
@@ -150,6 +161,53 @@ def main(args):
 
         for batch_id, (points, label, target, point_set_normalized_mask, pc_min, pc_max, fn) in tqdm(enumerate(testDataLoader), total=len(testDataLoader), smoothing=0.9):
             cur_batch_size, NUM_POINT, _ = points.size()
+            
+            # 处理超大点云：如果点云数量超过max_point，进行随机采样
+            if args.max_point is not None and NUM_POINT > args.max_point:
+                # 在命令行和日志中输出警告信息
+                warning_msg = f'\n{"="*80}\n⚠️  WARNING: Large Point Cloud Detected!\n{"-"*80}'
+                warning_msg += f'\nFile: {fn[0]}'
+                warning_msg += f'\nOriginal Points: {NUM_POINT:,}'
+                warning_msg += f'\nMax Allowed: {args.max_point:,}'
+                warning_msg += f'\nAction: Randomly sampling {args.max_point:,} points from {NUM_POINT:,} points'
+                warning_msg += f'\n{"-"*80}\n'
+                print(warning_msg)
+                log_string(warning_msg)
+                # 对batch中的每个样本进行采样
+                sampled_points_list = []
+                sampled_target_list = []
+                sampled_mask_list = []
+                
+                for i in range(cur_batch_size):
+                    # 获取当前样本的有效点（根据mask）
+                    cur_mask = point_set_normalized_mask[i].numpy()
+                    valid_indices = np.where(cur_mask)[0]
+                    
+                    if len(valid_indices) > args.max_point:
+                        # 随机采样
+                        sampled_indices = np.random.choice(valid_indices, args.max_point, replace=False)
+                        sampled_indices = np.sort(sampled_indices)  # 保持顺序
+                        
+                        # 创建新的点云数据
+                        new_points = points[i, sampled_indices, :].unsqueeze(0)
+                        new_target = target[i, sampled_indices].unsqueeze(0)
+                        new_mask = torch.ones(args.max_point, dtype=torch.bool)
+                    else:
+                        # 不需要采样
+                        new_points = points[i, :len(valid_indices), :].unsqueeze(0)
+                        new_target = target[i, :len(valid_indices)].unsqueeze(0)
+                        new_mask = torch.ones(len(valid_indices), dtype=torch.bool)
+                    
+                    sampled_points_list.append(new_points)
+                    sampled_target_list.append(new_target)
+                    sampled_mask_list.append(new_mask)
+                
+                # 重新组合batch
+                points = torch.cat(sampled_points_list, dim=0)
+                target = torch.cat(sampled_target_list, dim=0)
+                point_set_normalized_mask = torch.stack(sampled_mask_list, dim=0)
+                NUM_POINT = points.size(1)
+            
             points, label, target = points.float().to(device), label.long().to(device), target.long().to(device)
             points = points.transpose(2, 1)
             
@@ -218,7 +276,7 @@ def main(args):
                     )
                     
                     current_filename = os.path.basename(fn[i])
-                    plot_points(global_index, cur_points, segp, 'test', current_filename, precision, recall, f1)
+                    plot_points(global_index, cur_points, segp, 'test', current_filename, precision, recall, f1, args.exp_name)
                     global_index += 1
                     
                     results.append({
@@ -234,15 +292,19 @@ def main(args):
                 del points_np, pc_min_np, pc_max_np
             
             # 计算批处理的混淆矩阵
-            target_mask_flat = np.hstack(target_mask)
-            cur_pred_val_mask_flat = np.hstack(cur_pred_val_mask)
+            # --- 在循环内部 ---
+            # 将列表展平为一维数组
+            target_mask_flat = np.concatenate(target_mask)
+            cur_pred_val_mask_flat = np.concatenate(cur_pred_val_mask)
             
-            cm = confusion_matrix(target_mask_flat, cur_pred_val_mask_flat)
-            
-            if cm.shape[0] == 1:
-                tp, fp, fn = 0, 0, 0
-            else:
-                tp, fp, fn = cm[1, 1], cm[0, 1], cm[1, 0]
+            # 强制使用 labels=[0, 1] 确保矩阵永远是 2x2，即使某个文件只有信号或只有噪声
+            cm = confusion_matrix(target_mask_flat, cur_pred_val_mask_flat, labels=[0, 1])
+
+            # 解包 (0是噪声，1是信号)
+            # matrix layout:
+            # [[TN (真噪声), FP (噪声误判为信号)],
+            #  [FN (信号漏检), TP (真信号)]]
+            tn, fp, fn, tp = cm.ravel()
 
             tp_acc += tp
             fp_acc += fp
@@ -266,13 +328,21 @@ def main(args):
         test_metrics['F1 score'] = avg_f1
         
         # 打印全局平均指标到控制台和日志
+        # --- 在循环外部，计算 Global Metrics ---
+        # 加 1e-6 是为了防止除以 0
+        global_precision = tp_acc / (tp_acc + fp_acc + 1e-6)
+        global_recall = tp_acc / (tp_acc + fn_acc + 1e-6)
+        global_f1 = 2 * global_precision * global_recall / (global_precision + global_recall + 1e-6)
+
         print('\n' + '='*60)
-        print('[Global Average Metrics]')
-        print(f'Precision: {avg_precision:.5f}')
-        print(f'Recall: {avg_recall:.5f}')
-        print(f'F1 Score: {avg_f1:.5f}')
-        print('='*60 + '\n')
-        
+        print('[Global Metrics (Weighted by Point Count)]') # 这一点更客观
+        print(f'Precision: {global_precision:.5f}')
+        print(f'Recall:    {global_recall:.5f}')
+        print(f'F1 Score:  {global_f1:.5f}')
+        print('='*60)
+
+        # 保留原来的“算术平均”作为参考
+        print('[File-level Arithmetic Mean (Macro Average)]')
         log_string('Precision (avg): %.5f' % test_metrics['Precision'])
         log_string('Recall (avg): %.5f' % test_metrics['Recall'])
         log_string('F1 score (avg): %.5f' % test_metrics['F1 score'])
@@ -292,7 +362,11 @@ def main(args):
         else:
             csv_filename = 'per_file_metrics.csv'
         
-        csv_path = os.path.join(experiment_dir, csv_filename)
+        # 修改CSV保存路径到results目录
+        if args.exp_name:
+            csv_path = os.path.join(BASE_DIR, 'results', args.exp_name, csv_filename)
+        else:
+            csv_path = os.path.join(BASE_DIR, 'results', csv_filename)
         results_df.to_csv(csv_path, index=False)
         log_string(f'结果已保存至: {csv_filename}')
 

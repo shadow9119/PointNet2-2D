@@ -4,6 +4,13 @@ import time
 import threading
 from queue import Queue
 from datetime import datetime
+import torch
+
+# 参数确定
+# npoints 16384
+# batch size 16
+# gamma_max 10.0
+# alpha_max 2.0
 
 # ==============================================================================
 # 1. 核心配置区域 (请根据你的硬件和需求修改此处)
@@ -12,7 +19,7 @@ from datetime import datetime
 # [关键] 设置可用的 GPU ID 列表
 # 脚本会自动利用这些 GPU 并行运行实验。
 # 例如: ['0'] (单卡), ['0', '1'] (双卡), ['0', '1', '2', '3'] (四卡)
-AVAILABLE_GPUS = ['0'] 
+AVAILABLE_GPUS = ['3','4','5','6','7'] 
 
 # 项目路径配置
 SOURCEDIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,15 +34,20 @@ BASE_CONFIG = {
     
     # 训练参数
     'model': 'pointnet2_part_seg_msg', # 模型架构
-    'epoch_num': 50,      # 建议设置为 100-200 以保证收敛
-    'learning_rate': 0.001,
+    'epoch_num': 200,      # 建议设置为 100-200 以保证收敛
     'lr_decay': 0.9,
     'decay_rate': 1e-3,
-    'step_size': 5,
+    'step_size': 20,
     'loss_weight': 1.0,
-    
+    'learning_rate': 0.001,
+    'npoint': 16384,  
+    'batch_size': 16,
+    # 'gamma_max': 10.0,
+    # 'alpha_max': 2.0,
+
     # 测试参数
-    'test_npoint': 4096,   # 测试时的点数，None 则使用 npoint 的值
+    'test_npoint': None,   # 测试时的点数，None 则使用 npoint 的值
+    'test_max_point': 600000,  # 测试时的最大点数限制，避免OOM
     'test_batch_size': 1,
     'threshold': 0.5,
     'num_votes': 10,       # 测试时的投票数
@@ -48,96 +60,32 @@ BASE_CONFIG = {
 # ==============================================================================
 # 每一个字典代表一个实验，未指定的参数将使用 BASE_CONFIG 中的默认值
 EXPERIMENT_LIST = [    
-    # =================================================================
-    # 组 1: 全量基准 (Baseline)
-    # 极端测试：不丢弃任何信息，但 Batch Size=1 极其不稳定，用于设立“理论上限”
-    # =================================================================
     {
-        'name': 'Exp01_npoint[None]_batchsize[1]',
-        'loss_type': 'adaptive_focal',
-        'npoint': None,        
-        'batch_size': 1,       
-    },
-
-    # =================================================================
-    # 组 2: 高保真组 (High Fidelity)
-    # 覆盖最大文件 (55k)，Padding 到 64k。
-    # 显存压力巨大，Batch Size 只能很小。
-    # =================================================================
-    {
-        'name': 'Exp02_npoint[65536]_batchsize[2]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 65536,
-        'batch_size': 1,       
+        'name': 'Exp6_1_NLL_weight[None]',
+        'loss_type': 'nll',
+        'nll_weight': None,
     },
     {
-        'name': 'Exp03_npoint[32768]_batchsize[4]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 32768,       # 约为最大文件的一半
-        'batch_size': 2,       
-    },
-
-    # =================================================================
-    # 组 3: 统计平均组 (Statistical Average) - 重点关注
-    # 16384 最接近你的平均点数 (15003)，理论上是信息与效率的最佳平衡点。
-    # =================================================================
-    {
-        'name': 'Exp04_npoint[16384]_batchsize[8]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 16384,
-        'batch_size': 4,       
-    },
-
-    # =================================================================
-    # 组 4: 效率优先组 (High Efficiency / Max Batch Size)
-    # [补齐部分]：从这里开始，点数减少，Batch Size 达到上限 16。
-    # 这部分旨在验证：是否牺牲一部分点云细节，换取更稳定的 BN 层统计(BS=16)，能得到更好的结果？
-    # =================================================================
-    {
-        'name': 'Exp05_npoint[8192]_batchsize[16]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 8192,        # [补齐] 16k的一半，通常跑得很快且效果不错
-        'batch_size': 8,      # 达到你设定的最大 BS
+        'name': 'Exp6_2_NLL_weight[0.9,0.1]',
+        'loss_type': 'nll',
+        'nll_weight': '[0.9,0.1]',
     },
     {
-        'name': 'Exp06_npoint[4096]_batchsize[16]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 4096,        # [补齐] 进一步降低分辨率
-        'batch_size': 12,      
+        'name': 'Exp6_3_FL_weight[None]',
+        'loss_type': 'focal',
+        'focal_weight': None,
     },
     {
-        'name': 'Exp07_npoint[2048]_batchsize[16]',
-        'loss_type': 'adaptive_focal',
-        'npoint': 2048,        # [修正] 你的最小文件是559，2048是一个比较安全的下界
-        'batch_size': 16,       
+        'name': 'Exp6_4_FL_weight[0.9,0.1]',
+        'loss_type': 'focal',
+        'focal_weight': '[0.9,0.1]',
     },
-
-    # # --- 第二组：点云密度与Batch Size实验 ---
-    # # 注意：点数减少时，可以适当增大 Batch Size 以加快速度
-    # {
-    #     'name': 'Exp04_Points_2048',
-    #     'loss_type': 'adaptive_focal',
-    #     'npoint': 2048,
-    #     'batch_size': 8, 
-    # },
-    # {
-    #     'name': 'Exp05_Points_1024',
-    #     'loss_type': 'adaptive_focal',
-    #     'npoint': 1024,
-    #     'batch_size': 16,
-    # },
-    
-    # # --- 第三组：学习率敏感性实验 ---
-    # {
-    #     'name': 'Exp06_LR_High',
-    #     'learning_rate': 0.005,
-    #     'loss_type': 'adaptive_focal'
-    # },
-    #  {
-    #     'name': 'Exp07_LR_Low',
-    #     'learning_rate': 0.0001,
-    #     'loss_type': 'adaptive_focal'
-    # },
+    {
+        'name': 'Exp6_5_FAFL',
+        'loss_type': 'adaptive_focal',
+        'gamma_max': 10.0,
+        'alpha_max': 2.0,
+    },
 ]
 
 # ==============================================================================
@@ -151,6 +99,48 @@ for gpu in AVAILABLE_GPUS:
 
 # 线程锁，防止写入文件冲突
 file_write_lock = threading.Lock()
+
+def get_latest_checkpoint_epoch(checkpoints_dir):
+    """
+    检查checkpoints目录，返回最新的训练轮数
+    返回: (checkpoint_path, epoch) 或 (None, 0)
+    """
+    
+    if not os.path.exists(checkpoints_dir):
+        return None, 0
+    
+    # 查找所有checkpoint文件
+    checkpoint_files = []
+    
+    # 检查model.pth（最终模型）
+    model_path = os.path.join(checkpoints_dir, 'model.pth')
+    if os.path.exists(model_path):
+        checkpoint_files.append(('model.pth', model_path))
+    
+    # 检查所有ckpt_X.pth文件
+    for filename in os.listdir(checkpoints_dir):
+        if filename.startswith('ckpt_') and filename.endswith('.pth'):
+            checkpoint_files.append((filename, os.path.join(checkpoints_dir, filename)))
+    
+    if not checkpoint_files:
+        return None, 0
+    
+    # 找到最新的checkpoint（epoch最大的）
+    max_epoch = 0
+    latest_checkpoint = None
+    
+    for filename, filepath in checkpoint_files:
+        try:
+            checkpoint = torch.load(filepath, map_location='cpu')
+            epoch = checkpoint.get('epoch', 0)
+            if epoch > max_epoch:
+                max_epoch = epoch
+                latest_checkpoint = filepath
+        except Exception as e:
+            # 如果加载失败，跳过这个文件
+            continue
+    
+    return latest_checkpoint, max_epoch
 
 def write_summary(message, to_console=True):
     """将信息写入汇总 TXT 文件，并选择性打印到控制台"""
@@ -185,23 +175,32 @@ def run_single_experiment(exp_config):
     try:
         # ==================== 阶段 2.1: 训练模型 ====================
         
-        # 检查模型是否已存在
-        model_checkpoint_path = os.path.join(SOURCEDIR, 'log', 'part_seg', exp_name, 'checkpoints', 'model.pth')
-        model_exists = os.path.exists(model_checkpoint_path)
+        # 检查训练进度
+        checkpoints_dir = os.path.join(SOURCEDIR, 'log', 'part_seg', exp_name, 'checkpoints')
+        latest_checkpoint, current_epoch = get_latest_checkpoint_epoch(checkpoints_dir)
+        target_epoch = config['epoch_num']
         
-        if model_exists:
-            write_summary(f"    检测到已有模型: {model_checkpoint_path}，跳过训练，直接执行测试")
+        # 判断是否需要训练
+        if current_epoch >= target_epoch:
+            write_summary(f"    训练已完成: 当前轮数 {current_epoch}/{target_epoch}，跳过训练")
         else:
-            write_summary(f"    未检测到模型，开始训练...")
+            if current_epoch > 0:
+                write_summary(f"    检测到未完成的训练: 当前轮数 {current_epoch}/{target_epoch}，继续训练剩余 {target_epoch - current_epoch} 轮")
+                remaining_epochs = target_epoch - current_epoch
+                # 使用相对于exp_name的checkpoint路径
+                checkpoint_name = os.path.basename(latest_checkpoint)
+            else:
+                write_summary(f"    未检测到训练记录，开始从头训练 {target_epoch} 轮...")
+                remaining_epochs = target_epoch
+                checkpoint_name = None
             
             train_cmd = [
                 'python', config['train_file'],
                 '--model', config['model'],
-                '--epoch', str(config['epoch_num']),
+                '--epoch', str(remaining_epochs),
                 '--batch_size', str(config['batch_size']),
                 '--learning_rate', str(config['learning_rate']),
                 '--data_root', DATA_ROOT,
-                '--conf', # 假设这是一个布尔flag
                 '--loss_weight', str(config['loss_weight']),
                 '--lr_decay', str(config['lr_decay']),
                 '--step_size', str(config['step_size']),
@@ -214,15 +213,31 @@ def run_single_experiment(exp_config):
             # 添加条件参数
             if 'focal_gamma' in config:
                 train_cmd.extend(['--focal_gamma', str(config['focal_gamma'])])
+            if 'focal_weight' in config:
+                train_cmd.extend(['--focal_weight', str(config['focal_weight'])])
+            if 'gamma_max' in config:
+                train_cmd.extend(['--gamma_max', str(config['gamma_max'])])
+            if 'alpha_max' in config:
+                train_cmd.extend(['--alpha_max', str(config['alpha_max'])])
+            if 'nll_weight' in config:
+                train_cmd.extend(['--nll_weight', str(config['nll_weight'])])
             if config.get('npoint') is not None:
                 train_cmd.extend(['--npoint', str(config['npoint'])])
             
-            if config.get('ckpt'):
+            # 如果有checkpoint，加载它继续训练
+            if checkpoint_name:
+                train_cmd.extend(['--ckpt', checkpoint_name])
+            elif config.get('ckpt'):
                 train_cmd.extend(['--ckpt', config['ckpt']])
 
             # 执行训练
-            with open(exp_log_file, 'w') as log_f:
-                log_f.write(f"========== Training Start: {datetime.now()} ==========\n")
+            log_mode = 'a' if current_epoch > 0 else 'w'  # 如果是继续训练，追加日志
+            with open(exp_log_file, log_mode) as log_f:
+                if current_epoch > 0:
+                    log_f.write(f"\n\n========== Resume Training: {datetime.now()} ==========\n")
+                    log_f.write(f"Resuming from epoch {current_epoch}, training for {remaining_epochs} more epochs\n")
+                else:
+                    log_f.write(f"========== Training Start: {datetime.now()} ==========\n")
                 log_f.flush()
                 
                 # 运行命令，将 stdout 和 stderr 都重定向到 log 文件
@@ -231,7 +246,7 @@ def run_single_experiment(exp_config):
                 if process.returncode != 0:
                     raise Exception("训练脚本返回非零状态码，请查看详细日志。")
 
-            write_summary(f"--- [训练完成] 实验: {exp_name}")
+            write_summary(f"--- [训练完成] 实验: {exp_name} | 总轮数: {target_epoch}")
 
         # ==================== 阶段 2.2: 测试模型 ====================
         
@@ -249,7 +264,6 @@ def run_single_experiment(exp_config):
             '--batch_size', str(config['test_batch_size']),
             '--log_dir', trained_log_dir,  # 指向刚才训练好的目录
             '--data_root', DATA_ROOT,
-            '--conf',
             '--ckpt', config['test_ckpt'],
             '--threshold', str(config['threshold']),
             '--num_votes', str(config['num_votes']),
@@ -268,6 +282,10 @@ def run_single_experiment(exp_config):
         # 只有当 test_npoint 不为 None 时才添加 --num_point 参数
         if test_npoint is not None:
             test_cmd.extend(['--num_point', str(test_npoint)])
+        
+        # 添加 max_point 参数（如果配置中有）
+        if 'test_max_point' in config and config['test_max_point'] is not None:
+            test_cmd.extend(['--max_point', str(config['test_max_point'])])
 
         # 执行测试
         with open(exp_log_file, 'a') as log_f: # 追加模式
