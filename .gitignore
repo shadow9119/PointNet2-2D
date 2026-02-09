@@ -1,5 +1,5 @@
 *.pyc
 /data_old
-/log
-/results
+/log*
+/results*
 /runs*
