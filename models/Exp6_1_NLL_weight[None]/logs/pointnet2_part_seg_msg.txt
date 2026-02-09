@@ -1,0 +1,1323 @@
+2026-02-08 12:16:07,155 - Model - INFO - PARAMETER ...
+2026-02-08 12:16:07,156 - Model - INFO - Namespace(model='pointnet2_part_seg_msg', batch_size=16, epoch=200, learning_rate=0.001, gpu='0', optimizer='Adam', ckpt=None, decay_rate=0.001, npoint=16384, step_size=20, lr_decay=0.9, data_root='/apdcephfs_sh7/share_303276336/hunyuan/stoniachen/PointNet2-2D/data', loss_weight=1.0, early_stopping=False, loss_type='nll', focal_gamma=2.0, focal_weight='0.1', gamma_max=100.0, alpha_max=10.0, log_dir_name='Exp6_1_NLL_weight[None]', nll_weight='None')
+2026-02-08 12:16:07,171 - Model - INFO - train_partseg中，已读入train集个数: 901
+2026-02-08 12:16:07,172 - Model - INFO - train_partseg中，已读入val集个数:  101
+2026-02-08 12:16:08,817 - Model - INFO - Using loss function: nll
+2026-02-08 12:16:08,818 - Model - INFO - Loss function: Negative Log Likelihood (NLL), weight=None
+2026-02-08 12:16:08,820 - Model - INFO - No existing model, starting training from scratch...
+2026-02-08 12:16:08,875 - Model - INFO - TensorBoard: Starting fresh training
+2026-02-08 12:16:08,875 - Model - INFO - TensorBoard logs will be saved to: runs/Exp6_1_NLL_weight[None]
+2026-02-08 12:16:08,877 - Model - INFO - Epoch 1 (1/200):
+2026-02-08 12:16:08,877 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:19:18,652 - Model - INFO - PARAMETER ...
+2026-02-08 12:19:18,653 - Model - INFO - Namespace(model='pointnet2_part_seg_msg', batch_size=16, epoch=200, learning_rate=0.001, gpu='3', optimizer='Adam', ckpt=None, decay_rate=0.001, npoint=16384, step_size=20, lr_decay=0.9, data_root='/apdcephfs_sh7/share_303276336/hunyuan/stoniachen/PointNet2-2D/data', loss_weight=1.0, early_stopping=False, loss_type='nll', focal_gamma=2.0, focal_weight='0.1', gamma_max=100.0, alpha_max=10.0, log_dir_name='Exp6_1_NLL_weight[None]', nll_weight='None')
+2026-02-08 12:19:18,659 - Model - INFO - train_partseg中，已读入train集个数: 901
+2026-02-08 12:19:18,660 - Model - INFO - train_partseg中，已读入val集个数:  101
+2026-02-08 12:19:19,903 - Model - INFO - Using loss function: nll
+2026-02-08 12:19:19,904 - Model - INFO - Loss function: Negative Log Likelihood (NLL), weight=None
+2026-02-08 12:19:19,905 - Model - INFO - No existing model, starting training from scratch...
+2026-02-08 12:19:19,926 - Model - INFO - TensorBoard: Starting fresh training
+2026-02-08 12:19:19,926 - Model - INFO - TensorBoard logs will be saved to: runs/Exp6_1_NLL_weight[None]
+2026-02-08 12:19:19,928 - Model - INFO - Epoch 1 (1/200):
+2026-02-08 12:19:19,929 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:28:32,666 - Model - INFO - PARAMETER ...
+2026-02-08 12:28:32,667 - Model - INFO - Namespace(model='pointnet2_part_seg_msg', batch_size=16, epoch=200, learning_rate=0.001, gpu='3', optimizer='Adam', ckpt=None, decay_rate=0.001, npoint=16384, step_size=20, lr_decay=0.9, data_root='/apdcephfs_sh7/share_303276336/hunyuan/stoniachen/PointNet2-2D/data', loss_weight=1.0, early_stopping=False, loss_type='nll', focal_gamma=2.0, focal_weight='0.1', gamma_max=100.0, alpha_max=10.0, log_dir_name='Exp6_1_NLL_weight[None]', nll_weight='None')
+2026-02-08 12:28:32,672 - Model - INFO - train_partseg中，已读入train集个数: 901
+2026-02-08 12:28:32,673 - Model - INFO - train_partseg中，已读入val集个数:  101
+2026-02-08 12:28:33,916 - Model - INFO - Using loss function: nll
+2026-02-08 12:28:33,917 - Model - INFO - Loss function: Negative Log Likelihood (NLL), weight=None
+2026-02-08 12:28:33,918 - Model - INFO - No existing model, starting training from scratch...
+2026-02-08 12:28:33,950 - Model - INFO - TensorBoard: Starting fresh training
+2026-02-08 12:28:33,951 - Model - INFO - TensorBoard logs will be saved to: runs/Exp6_1_NLL_weight[None]
+2026-02-08 12:28:33,952 - Model - INFO - Epoch 1 (1/200):
+2026-02-08 12:28:33,953 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:30:59,094 - Model - INFO - PARAMETER ...
+2026-02-08 12:30:59,095 - Model - INFO - Namespace(model='pointnet2_part_seg_msg', batch_size=16, epoch=200, learning_rate=0.001, gpu='3', optimizer='Adam', ckpt=None, decay_rate=0.001, npoint=16384, step_size=20, lr_decay=0.9, data_root='/apdcephfs_sh7/share_303276336/hunyuan/stoniachen/PointNet2-2D/data', loss_weight=1.0, early_stopping=False, loss_type='nll', focal_gamma=2.0, focal_weight='0.1', gamma_max=100.0, alpha_max=10.0, log_dir_name='Exp6_1_NLL_weight[None]', nll_weight='None')
+2026-02-08 12:30:59,103 - Model - INFO - train_partseg中，已读入train集个数: 901
+2026-02-08 12:30:59,105 - Model - INFO - train_partseg中，已读入val集个数:  101
+2026-02-08 12:30:59,954 - Model - INFO - Using loss function: nll
+2026-02-08 12:30:59,955 - Model - INFO - Loss function: Negative Log Likelihood (NLL), weight=None
+2026-02-08 12:30:59,957 - Model - INFO - No existing model, starting training from scratch...
+2026-02-08 12:30:59,992 - Model - INFO - TensorBoard: Starting fresh training
+2026-02-08 12:30:59,993 - Model - INFO - TensorBoard logs will be saved to: runs/Exp6_1_NLL_weight[None]
+2026-02-08 12:30:59,994 - Model - INFO - Epoch 1 (1/200):
+2026-02-08 12:30:59,995 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:31:55,056 - Model - INFO - Train loss: 0.16661
+2026-02-08 12:31:55,056 - Model - INFO - Train F1 score: 0.94983
+2026-02-08 12:32:01,049 - Model - INFO - Val loss: 0.10169
+2026-02-08 12:32:01,049 - Model - INFO - Val F1 score: 0.97812
+2026-02-08 12:32:01,089 - Model - INFO - Epoch 2 (2/200):
+2026-02-08 12:32:01,090 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:32:52,409 - Model - INFO - Train loss: 0.08890
+2026-02-08 12:32:52,410 - Model - INFO - Train F1 score: 0.97981
+2026-02-08 12:32:58,125 - Model - INFO - Val loss: 0.08041
+2026-02-08 12:32:58,126 - Model - INFO - Val F1 score: 0.98341
+2026-02-08 12:32:58,304 - Model - INFO - Epoch 3 (3/200):
+2026-02-08 12:32:58,305 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:33:49,586 - Model - INFO - Train loss: 0.07856
+2026-02-08 12:33:49,587 - Model - INFO - Train F1 score: 0.98270
+2026-02-08 12:33:55,146 - Model - INFO - Val loss: 0.07467
+2026-02-08 12:33:55,147 - Model - INFO - Val F1 score: 0.98393
+2026-02-08 12:33:55,193 - Model - INFO - Epoch 4 (4/200):
+2026-02-08 12:33:55,194 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:34:47,206 - Model - INFO - Train loss: 0.07220
+2026-02-08 12:34:47,207 - Model - INFO - Train F1 score: 0.98436
+2026-02-08 12:34:52,621 - Model - INFO - Val loss: 0.08062
+2026-02-08 12:34:52,622 - Model - INFO - Val F1 score: 0.98314
+2026-02-08 12:34:52,675 - Model - INFO - Epoch 5 (5/200):
+2026-02-08 12:34:52,676 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:35:44,878 - Model - INFO - Train loss: 0.07749
+2026-02-08 12:35:44,878 - Model - INFO - Train F1 score: 0.98224
+2026-02-08 12:35:50,662 - Model - INFO - Val loss: 0.07982
+2026-02-08 12:35:50,662 - Model - INFO - Val F1 score: 0.98348
+2026-02-08 12:35:50,663 - Model - INFO - Save checkpoint at epoch 5...
+2026-02-08 12:35:50,664 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_5.pth
+2026-02-08 12:35:50,855 - Model - INFO - Epoch 6 (6/200):
+2026-02-08 12:35:50,855 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:36:43,051 - Model - INFO - Train loss: 0.07661
+2026-02-08 12:36:43,057 - Model - INFO - Train F1 score: 0.98279
+2026-02-08 12:36:48,554 - Model - INFO - Val loss: 0.07423
+2026-02-08 12:36:48,555 - Model - INFO - Val F1 score: 0.98395
+2026-02-08 12:36:48,605 - Model - INFO - Epoch 7 (7/200):
+2026-02-08 12:36:48,606 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:37:39,829 - Model - INFO - Train loss: 0.07546
+2026-02-08 12:37:39,830 - Model - INFO - Train F1 score: 0.98312
+2026-02-08 12:37:45,656 - Model - INFO - Val loss: 0.07036
+2026-02-08 12:37:45,656 - Model - INFO - Val F1 score: 0.98493
+2026-02-08 12:37:45,702 - Model - INFO - Epoch 8 (8/200):
+2026-02-08 12:37:45,702 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:38:37,368 - Model - INFO - Train loss: 0.08329
+2026-02-08 12:38:37,369 - Model - INFO - Train F1 score: 0.98028
+2026-02-08 12:38:43,192 - Model - INFO - Val loss: 0.08486
+2026-02-08 12:38:43,193 - Model - INFO - Val F1 score: 0.98000
+2026-02-08 12:38:43,253 - Model - INFO - Epoch 9 (9/200):
+2026-02-08 12:38:43,254 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:39:35,476 - Model - INFO - Train loss: 0.08530
+2026-02-08 12:39:35,482 - Model - INFO - Train F1 score: 0.97963
+2026-02-08 12:39:41,021 - Model - INFO - Val loss: 0.07298
+2026-02-08 12:39:41,022 - Model - INFO - Val F1 score: 0.98417
+2026-02-08 12:39:41,088 - Model - INFO - Epoch 10 (10/200):
+2026-02-08 12:39:41,089 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:40:33,017 - Model - INFO - Train loss: 0.07156
+2026-02-08 12:40:33,018 - Model - INFO - Train F1 score: 0.98394
+2026-02-08 12:40:38,778 - Model - INFO - Val loss: 0.07206
+2026-02-08 12:40:38,778 - Model - INFO - Val F1 score: 0.98377
+2026-02-08 12:40:38,792 - Model - INFO - Save checkpoint at epoch 10...
+2026-02-08 12:40:38,792 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_10.pth
+2026-02-08 12:40:38,957 - Model - INFO - Epoch 11 (11/200):
+2026-02-08 12:40:38,958 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:41:30,211 - Model - INFO - Train loss: 0.06917
+2026-02-08 12:41:30,212 - Model - INFO - Train F1 score: 0.98494
+2026-02-08 12:41:35,472 - Model - INFO - Val loss: 0.06623
+2026-02-08 12:41:35,473 - Model - INFO - Val F1 score: 0.98618
+2026-02-08 12:41:35,524 - Model - INFO - Epoch 12 (12/200):
+2026-02-08 12:41:35,524 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:42:27,046 - Model - INFO - Train loss: 0.06409
+2026-02-08 12:42:27,051 - Model - INFO - Train F1 score: 0.98607
+2026-02-08 12:42:32,739 - Model - INFO - Val loss: 0.06141
+2026-02-08 12:42:32,739 - Model - INFO - Val F1 score: 0.98616
+2026-02-08 12:42:32,819 - Model - INFO - Epoch 13 (13/200):
+2026-02-08 12:42:32,820 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:43:23,774 - Model - INFO - Train loss: 0.06572
+2026-02-08 12:43:23,778 - Model - INFO - Train F1 score: 0.98565
+2026-02-08 12:43:29,610 - Model - INFO - Val loss: 0.06361
+2026-02-08 12:43:29,610 - Model - INFO - Val F1 score: 0.98630
+2026-02-08 12:43:29,740 - Model - INFO - Epoch 14 (14/200):
+2026-02-08 12:43:29,741 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:44:21,963 - Model - INFO - Train loss: 0.06265
+2026-02-08 12:44:21,964 - Model - INFO - Train F1 score: 0.98629
+2026-02-08 12:44:27,926 - Model - INFO - Val loss: 0.06397
+2026-02-08 12:44:27,927 - Model - INFO - Val F1 score: 0.98567
+2026-02-08 12:44:28,052 - Model - INFO - Epoch 15 (15/200):
+2026-02-08 12:44:28,059 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:45:20,069 - Model - INFO - Train loss: 0.06575
+2026-02-08 12:45:20,070 - Model - INFO - Train F1 score: 0.98531
+2026-02-08 12:45:26,063 - Model - INFO - Val loss: 0.07228
+2026-02-08 12:45:26,064 - Model - INFO - Val F1 score: 0.98327
+2026-02-08 12:45:26,064 - Model - INFO - Save checkpoint at epoch 15...
+2026-02-08 12:45:26,065 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_15.pth
+2026-02-08 12:45:26,289 - Model - INFO - Epoch 16 (16/200):
+2026-02-08 12:45:26,290 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:46:16,643 - Model - INFO - Train loss: 0.06894
+2026-02-08 12:46:16,644 - Model - INFO - Train F1 score: 0.98440
+2026-02-08 12:46:22,182 - Model - INFO - Val loss: 0.08345
+2026-02-08 12:46:22,183 - Model - INFO - Val F1 score: 0.97991
+2026-02-08 12:46:22,317 - Model - INFO - Epoch 17 (17/200):
+2026-02-08 12:46:22,318 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:47:13,824 - Model - INFO - Train loss: 0.05919
+2026-02-08 12:47:13,831 - Model - INFO - Train F1 score: 0.98734
+2026-02-08 12:47:19,592 - Model - INFO - Val loss: 0.06105
+2026-02-08 12:47:19,602 - Model - INFO - Val F1 score: 0.98631
+2026-02-08 12:47:19,728 - Model - INFO - Epoch 18 (18/200):
+2026-02-08 12:47:19,728 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:48:10,615 - Model - INFO - Train loss: 0.06104
+2026-02-08 12:48:10,616 - Model - INFO - Train F1 score: 0.98672
+2026-02-08 12:48:16,326 - Model - INFO - Val loss: 0.06001
+2026-02-08 12:48:16,327 - Model - INFO - Val F1 score: 0.98611
+2026-02-08 12:48:16,470 - Model - INFO - Epoch 19 (19/200):
+2026-02-08 12:48:16,470 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:49:07,752 - Model - INFO - Train loss: 0.05822
+2026-02-08 12:49:07,752 - Model - INFO - Train F1 score: 0.98755
+2026-02-08 12:49:13,531 - Model - INFO - Val loss: 0.06894
+2026-02-08 12:49:13,532 - Model - INFO - Val F1 score: 0.98488
+2026-02-08 12:49:13,575 - Model - INFO - Epoch 20 (20/200):
+2026-02-08 12:49:13,577 - Model - INFO - Learning rate:0.001000
+2026-02-08 12:50:05,726 - Model - INFO - Train loss: 0.09144
+2026-02-08 12:50:05,727 - Model - INFO - Train F1 score: 0.97872
+2026-02-08 12:50:11,630 - Model - INFO - Val loss: 0.08774
+2026-02-08 12:50:11,631 - Model - INFO - Val F1 score: 0.97500
+2026-02-08 12:50:11,645 - Model - INFO - Save checkpoint at epoch 20...
+2026-02-08 12:50:11,645 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_20.pth
+2026-02-08 12:50:11,819 - Model - INFO - Epoch 21 (21/200):
+2026-02-08 12:50:11,820 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:51:02,346 - Model - INFO - Train loss: 0.07137
+2026-02-08 12:51:02,347 - Model - INFO - Train F1 score: 0.98416
+2026-02-08 12:51:09,323 - Model - INFO - Val loss: 0.07683
+2026-02-08 12:51:09,329 - Model - INFO - Val F1 score: 0.97659
+2026-02-08 12:51:09,456 - Model - INFO - Epoch 22 (22/200):
+2026-02-08 12:51:09,456 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:51:58,894 - Model - INFO - Train loss: 0.06908
+2026-02-08 12:51:58,895 - Model - INFO - Train F1 score: 0.98461
+2026-02-08 12:52:04,496 - Model - INFO - Val loss: 0.06504
+2026-02-08 12:52:04,497 - Model - INFO - Val F1 score: 0.98559
+2026-02-08 12:52:04,981 - Model - INFO - Epoch 23 (23/200):
+2026-02-08 12:52:04,982 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:52:56,320 - Model - INFO - Train loss: 0.06651
+2026-02-08 12:52:56,321 - Model - INFO - Train F1 score: 0.98500
+2026-02-08 12:53:01,858 - Model - INFO - Val loss: 0.07117
+2026-02-08 12:53:01,858 - Model - INFO - Val F1 score: 0.98412
+2026-02-08 12:53:01,916 - Model - INFO - Epoch 24 (24/200):
+2026-02-08 12:53:01,916 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:53:53,617 - Model - INFO - Train loss: 0.06114
+2026-02-08 12:53:53,618 - Model - INFO - Train F1 score: 0.98679
+2026-02-08 12:53:59,396 - Model - INFO - Val loss: 0.06273
+2026-02-08 12:53:59,397 - Model - INFO - Val F1 score: 0.98352
+2026-02-08 12:53:59,483 - Model - INFO - Epoch 25 (25/200):
+2026-02-08 12:53:59,485 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:54:50,266 - Model - INFO - Train loss: 0.05962
+2026-02-08 12:54:50,267 - Model - INFO - Train F1 score: 0.98697
+2026-02-08 12:54:56,078 - Model - INFO - Val loss: 0.05682
+2026-02-08 12:54:56,079 - Model - INFO - Val F1 score: 0.98774
+2026-02-08 12:54:56,079 - Model - INFO - Save checkpoint at epoch 25...
+2026-02-08 12:54:56,080 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_25.pth
+2026-02-08 12:54:56,251 - Model - INFO - Epoch 26 (26/200):
+2026-02-08 12:54:56,251 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:55:45,387 - Model - INFO - Train loss: 0.05404
+2026-02-08 12:55:45,388 - Model - INFO - Train F1 score: 0.98871
+2026-02-08 12:55:50,948 - Model - INFO - Val loss: 0.05710
+2026-02-08 12:55:50,948 - Model - INFO - Val F1 score: 0.98703
+2026-02-08 12:55:50,999 - Model - INFO - Epoch 27 (27/200):
+2026-02-08 12:55:51,000 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:56:41,703 - Model - INFO - Train loss: 0.05147
+2026-02-08 12:56:41,704 - Model - INFO - Train F1 score: 0.98928
+2026-02-08 12:56:47,198 - Model - INFO - Val loss: 0.06431
+2026-02-08 12:56:47,199 - Model - INFO - Val F1 score: 0.98512
+2026-02-08 12:56:47,244 - Model - INFO - Epoch 28 (28/200):
+2026-02-08 12:56:47,245 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:57:38,640 - Model - INFO - Train loss: 0.05989
+2026-02-08 12:57:38,649 - Model - INFO - Train F1 score: 0.98679
+2026-02-08 12:57:44,520 - Model - INFO - Val loss: 0.05938
+2026-02-08 12:57:44,521 - Model - INFO - Val F1 score: 0.98679
+2026-02-08 12:57:44,612 - Model - INFO - Epoch 29 (29/200):
+2026-02-08 12:57:44,613 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:58:36,302 - Model - INFO - Train loss: 0.05133
+2026-02-08 12:58:36,306 - Model - INFO - Train F1 score: 0.98922
+2026-02-08 12:58:42,051 - Model - INFO - Val loss: 0.06671
+2026-02-08 12:58:42,052 - Model - INFO - Val F1 score: 0.98536
+2026-02-08 12:58:42,146 - Model - INFO - Epoch 30 (30/200):
+2026-02-08 12:58:42,147 - Model - INFO - Learning rate:0.000900
+2026-02-08 12:59:33,682 - Model - INFO - Train loss: 0.06465
+2026-02-08 12:59:33,685 - Model - INFO - Train F1 score: 0.98572
+2026-02-08 12:59:39,235 - Model - INFO - Val loss: 0.06372
+2026-02-08 12:59:39,236 - Model - INFO - Val F1 score: 0.98403
+2026-02-08 12:59:39,250 - Model - INFO - Save checkpoint at epoch 30...
+2026-02-08 12:59:39,250 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_30.pth
+2026-02-08 12:59:39,427 - Model - INFO - Epoch 31 (31/200):
+2026-02-08 12:59:39,428 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:00:30,046 - Model - INFO - Train loss: 0.05586
+2026-02-08 13:00:30,047 - Model - INFO - Train F1 score: 0.98809
+2026-02-08 13:00:36,024 - Model - INFO - Val loss: 0.05885
+2026-02-08 13:00:36,025 - Model - INFO - Val F1 score: 0.98801
+2026-02-08 13:00:36,067 - Model - INFO - Epoch 32 (32/200):
+2026-02-08 13:00:36,068 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:01:27,138 - Model - INFO - Train loss: 0.05298
+2026-02-08 13:01:27,139 - Model - INFO - Train F1 score: 0.98867
+2026-02-08 13:01:32,716 - Model - INFO - Val loss: 0.05154
+2026-02-08 13:01:32,717 - Model - INFO - Val F1 score: 0.98811
+2026-02-08 13:01:32,765 - Model - INFO - Epoch 33 (33/200):
+2026-02-08 13:01:32,765 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:02:21,805 - Model - INFO - Train loss: 0.05110
+2026-02-08 13:02:21,805 - Model - INFO - Train F1 score: 0.98945
+2026-02-08 13:02:27,639 - Model - INFO - Val loss: 0.04843
+2026-02-08 13:02:27,639 - Model - INFO - Val F1 score: 0.98957
+2026-02-08 13:02:27,683 - Model - INFO - Epoch 34 (34/200):
+2026-02-08 13:02:27,688 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:03:19,250 - Model - INFO - Train loss: 0.04623
+2026-02-08 13:03:19,251 - Model - INFO - Train F1 score: 0.99026
+2026-02-08 13:03:25,297 - Model - INFO - Val loss: 0.04986
+2026-02-08 13:03:25,298 - Model - INFO - Val F1 score: 0.98980
+2026-02-08 13:03:25,362 - Model - INFO - Epoch 35 (35/200):
+2026-02-08 13:03:25,362 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:04:16,838 - Model - INFO - Train loss: 0.04795
+2026-02-08 13:04:16,839 - Model - INFO - Train F1 score: 0.98985
+2026-02-08 13:04:22,843 - Model - INFO - Val loss: 0.05685
+2026-02-08 13:04:22,843 - Model - INFO - Val F1 score: 0.98911
+2026-02-08 13:04:22,844 - Model - INFO - Save checkpoint at epoch 35...
+2026-02-08 13:04:22,845 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_35.pth
+2026-02-08 13:04:23,021 - Model - INFO - Epoch 36 (36/200):
+2026-02-08 13:04:23,022 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:05:14,075 - Model - INFO - Train loss: 0.04837
+2026-02-08 13:05:14,076 - Model - INFO - Train F1 score: 0.98971
+2026-02-08 13:05:19,892 - Model - INFO - Val loss: 0.05059
+2026-02-08 13:05:19,893 - Model - INFO - Val F1 score: 0.98911
+2026-02-08 13:05:19,973 - Model - INFO - Epoch 37 (37/200):
+2026-02-08 13:05:19,973 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:06:10,427 - Model - INFO - Train loss: 0.04892
+2026-02-08 13:06:10,428 - Model - INFO - Train F1 score: 0.98957
+2026-02-08 13:06:15,925 - Model - INFO - Val loss: 0.05017
+2026-02-08 13:06:15,926 - Model - INFO - Val F1 score: 0.98856
+2026-02-08 13:06:16,090 - Model - INFO - Epoch 38 (38/200):
+2026-02-08 13:06:16,091 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:07:05,378 - Model - INFO - Train loss: 0.05221
+2026-02-08 13:07:05,379 - Model - INFO - Train F1 score: 0.98858
+2026-02-08 13:07:11,245 - Model - INFO - Val loss: 0.07026
+2026-02-08 13:07:11,246 - Model - INFO - Val F1 score: 0.98164
+2026-02-08 13:07:11,568 - Model - INFO - Epoch 39 (39/200):
+2026-02-08 13:07:11,568 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:07:59,693 - Model - INFO - Train loss: 0.05322
+2026-02-08 13:07:59,694 - Model - INFO - Train F1 score: 0.98825
+2026-02-08 13:08:04,961 - Model - INFO - Val loss: 0.06641
+2026-02-08 13:08:04,961 - Model - INFO - Val F1 score: 0.98102
+2026-02-08 13:08:05,372 - Model - INFO - Epoch 40 (40/200):
+2026-02-08 13:08:05,373 - Model - INFO - Learning rate:0.000900
+2026-02-08 13:08:53,419 - Model - INFO - Train loss: 0.04731
+2026-02-08 13:08:53,420 - Model - INFO - Train F1 score: 0.99017
+2026-02-08 13:08:59,120 - Model - INFO - Val loss: 0.04929
+2026-02-08 13:08:59,120 - Model - INFO - Val F1 score: 0.98889
+2026-02-08 13:08:59,136 - Model - INFO - Save checkpoint at epoch 40...
+2026-02-08 13:08:59,136 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_40.pth
+2026-02-08 13:08:59,313 - Model - INFO - Epoch 41 (41/200):
+2026-02-08 13:08:59,314 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:09:50,095 - Model - INFO - Train loss: 0.04870
+2026-02-08 13:09:50,096 - Model - INFO - Train F1 score: 0.98957
+2026-02-08 13:09:55,742 - Model - INFO - Val loss: 0.05339
+2026-02-08 13:09:55,743 - Model - INFO - Val F1 score: 0.98930
+2026-02-08 13:09:55,829 - Model - INFO - Epoch 42 (42/200):
+2026-02-08 13:09:55,829 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:10:46,675 - Model - INFO - Train loss: 0.04713
+2026-02-08 13:10:46,676 - Model - INFO - Train F1 score: 0.99031
+2026-02-08 13:10:52,317 - Model - INFO - Val loss: 0.05014
+2026-02-08 13:10:52,317 - Model - INFO - Val F1 score: 0.98907
+2026-02-08 13:10:52,373 - Model - INFO - Epoch 43 (43/200):
+2026-02-08 13:10:52,374 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:11:43,373 - Model - INFO - Train loss: 0.04853
+2026-02-08 13:11:43,373 - Model - INFO - Train F1 score: 0.98957
+2026-02-08 13:11:49,087 - Model - INFO - Val loss: 0.05019
+2026-02-08 13:11:49,088 - Model - INFO - Val F1 score: 0.98981
+2026-02-08 13:11:49,216 - Model - INFO - Epoch 44 (44/200):
+2026-02-08 13:11:49,217 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:12:40,427 - Model - INFO - Train loss: 0.05176
+2026-02-08 13:12:40,432 - Model - INFO - Train F1 score: 0.98896
+2026-02-08 13:12:46,217 - Model - INFO - Val loss: 0.05245
+2026-02-08 13:12:46,217 - Model - INFO - Val F1 score: 0.98882
+2026-02-08 13:12:46,307 - Model - INFO - Epoch 45 (45/200):
+2026-02-08 13:12:46,308 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:13:37,844 - Model - INFO - Train loss: 0.05220
+2026-02-08 13:13:37,845 - Model - INFO - Train F1 score: 0.98897
+2026-02-08 13:13:43,828 - Model - INFO - Val loss: 0.05061
+2026-02-08 13:13:43,829 - Model - INFO - Val F1 score: 0.98906
+2026-02-08 13:13:43,829 - Model - INFO - Save checkpoint at epoch 45...
+2026-02-08 13:13:43,830 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_45.pth
+2026-02-08 13:13:44,175 - Model - INFO - Epoch 46 (46/200):
+2026-02-08 13:13:44,183 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:14:35,211 - Model - INFO - Train loss: 0.04709
+2026-02-08 13:14:35,212 - Model - INFO - Train F1 score: 0.99008
+2026-02-08 13:14:41,205 - Model - INFO - Val loss: 0.04956
+2026-02-08 13:14:41,206 - Model - INFO - Val F1 score: 0.98904
+2026-02-08 13:14:41,275 - Model - INFO - Epoch 47 (47/200):
+2026-02-08 13:14:41,275 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:15:32,914 - Model - INFO - Train loss: 0.04244
+2026-02-08 13:15:32,915 - Model - INFO - Train F1 score: 0.99139
+2026-02-08 13:15:38,822 - Model - INFO - Val loss: 0.04757
+2026-02-08 13:15:38,823 - Model - INFO - Val F1 score: 0.99011
+2026-02-08 13:15:38,934 - Model - INFO - Epoch 48 (48/200):
+2026-02-08 13:15:38,934 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:16:29,946 - Model - INFO - Train loss: 0.04112
+2026-02-08 13:16:29,951 - Model - INFO - Train F1 score: 0.99183
+2026-02-08 13:16:35,804 - Model - INFO - Val loss: 0.04783
+2026-02-08 13:16:35,804 - Model - INFO - Val F1 score: 0.98964
+2026-02-08 13:16:35,857 - Model - INFO - Epoch 49 (49/200):
+2026-02-08 13:16:35,858 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:17:25,277 - Model - INFO - Train loss: 0.04466
+2026-02-08 13:17:25,280 - Model - INFO - Train F1 score: 0.99069
+2026-02-08 13:17:30,807 - Model - INFO - Val loss: 0.04841
+2026-02-08 13:17:30,808 - Model - INFO - Val F1 score: 0.99017
+2026-02-08 13:17:30,897 - Model - INFO - Epoch 50 (50/200):
+2026-02-08 13:17:30,897 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:18:20,864 - Model - INFO - Train loss: 0.04263
+2026-02-08 13:18:20,865 - Model - INFO - Train F1 score: 0.99141
+2026-02-08 13:18:26,612 - Model - INFO - Val loss: 0.04438
+2026-02-08 13:18:26,613 - Model - INFO - Val F1 score: 0.99079
+2026-02-08 13:18:26,632 - Model - INFO - Save checkpoint at epoch 50...
+2026-02-08 13:18:26,633 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_50.pth
+2026-02-08 13:18:26,795 - Model - INFO - Epoch 51 (51/200):
+2026-02-08 13:18:26,796 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:19:16,800 - Model - INFO - Train loss: 0.04328
+2026-02-08 13:19:16,801 - Model - INFO - Train F1 score: 0.99110
+2026-02-08 13:19:22,684 - Model - INFO - Val loss: 0.04408
+2026-02-08 13:19:22,684 - Model - INFO - Val F1 score: 0.99101
+2026-02-08 13:19:22,727 - Model - INFO - Epoch 52 (52/200):
+2026-02-08 13:19:22,727 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:20:13,866 - Model - INFO - Train loss: 0.04605
+2026-02-08 13:20:13,866 - Model - INFO - Train F1 score: 0.99019
+2026-02-08 13:20:19,561 - Model - INFO - Val loss: 0.04875
+2026-02-08 13:20:19,562 - Model - INFO - Val F1 score: 0.98950
+2026-02-08 13:20:19,627 - Model - INFO - Epoch 53 (53/200):
+2026-02-08 13:20:19,628 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:21:11,084 - Model - INFO - Train loss: 0.04487
+2026-02-08 13:21:11,085 - Model - INFO - Train F1 score: 0.99080
+2026-02-08 13:21:17,094 - Model - INFO - Val loss: 0.05640
+2026-02-08 13:21:17,094 - Model - INFO - Val F1 score: 0.98893
+2026-02-08 13:21:17,142 - Model - INFO - Epoch 54 (54/200):
+2026-02-08 13:21:17,146 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:22:09,360 - Model - INFO - Train loss: 0.04473
+2026-02-08 13:22:09,376 - Model - INFO - Train F1 score: 0.99068
+2026-02-08 13:22:15,194 - Model - INFO - Val loss: 0.04442
+2026-02-08 13:22:15,195 - Model - INFO - Val F1 score: 0.99089
+2026-02-08 13:22:15,278 - Model - INFO - Epoch 55 (55/200):
+2026-02-08 13:22:15,279 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:23:06,821 - Model - INFO - Train loss: 0.04033
+2026-02-08 13:23:06,831 - Model - INFO - Train F1 score: 0.99198
+2026-02-08 13:23:12,516 - Model - INFO - Val loss: 0.04340
+2026-02-08 13:23:12,517 - Model - INFO - Val F1 score: 0.99121
+2026-02-08 13:23:12,517 - Model - INFO - Save checkpoint at epoch 55...
+2026-02-08 13:23:12,517 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_55.pth
+2026-02-08 13:23:12,736 - Model - INFO - Epoch 56 (56/200):
+2026-02-08 13:23:12,736 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:24:02,099 - Model - INFO - Train loss: 0.04085
+2026-02-08 13:24:02,111 - Model - INFO - Train F1 score: 0.99193
+2026-02-08 13:24:08,795 - Model - INFO - Val loss: 0.04477
+2026-02-08 13:24:08,796 - Model - INFO - Val F1 score: 0.99130
+2026-02-08 13:24:09,029 - Model - INFO - Epoch 57 (57/200):
+2026-02-08 13:24:09,029 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:24:59,032 - Model - INFO - Train loss: 0.05585
+2026-02-08 13:24:59,035 - Model - INFO - Train F1 score: 0.98728
+2026-02-08 13:25:04,992 - Model - INFO - Val loss: 0.05640
+2026-02-08 13:25:04,993 - Model - INFO - Val F1 score: 0.98732
+2026-02-08 13:25:05,687 - Model - INFO - Epoch 58 (58/200):
+2026-02-08 13:25:05,688 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:25:54,055 - Model - INFO - Train loss: 0.04710
+2026-02-08 13:25:54,056 - Model - INFO - Train F1 score: 0.98997
+2026-02-08 13:25:59,529 - Model - INFO - Val loss: 0.04483
+2026-02-08 13:25:59,530 - Model - INFO - Val F1 score: 0.99073
+2026-02-08 13:25:59,593 - Model - INFO - Epoch 59 (59/200):
+2026-02-08 13:25:59,594 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:26:49,639 - Model - INFO - Train loss: 0.04692
+2026-02-08 13:26:49,640 - Model - INFO - Train F1 score: 0.99023
+2026-02-08 13:26:55,176 - Model - INFO - Val loss: 0.04971
+2026-02-08 13:26:55,177 - Model - INFO - Val F1 score: 0.98946
+2026-02-08 13:26:55,220 - Model - INFO - Epoch 60 (60/200):
+2026-02-08 13:26:55,221 - Model - INFO - Learning rate:0.000810
+2026-02-08 13:27:46,125 - Model - INFO - Train loss: 0.04761
+2026-02-08 13:27:46,127 - Model - INFO - Train F1 score: 0.99001
+2026-02-08 13:27:51,996 - Model - INFO - Val loss: 0.04284
+2026-02-08 13:27:51,997 - Model - INFO - Val F1 score: 0.99108
+2026-02-08 13:27:52,010 - Model - INFO - Save checkpoint at epoch 60...
+2026-02-08 13:27:52,010 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_60.pth
+2026-02-08 13:27:52,185 - Model - INFO - Epoch 61 (61/200):
+2026-02-08 13:27:52,186 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:28:42,413 - Model - INFO - Train loss: 0.04251
+2026-02-08 13:28:42,414 - Model - INFO - Train F1 score: 0.99147
+2026-02-08 13:28:48,110 - Model - INFO - Val loss: 0.04332
+2026-02-08 13:28:48,110 - Model - INFO - Val F1 score: 0.99105
+2026-02-08 13:28:48,167 - Model - INFO - Epoch 62 (62/200):
+2026-02-08 13:28:48,168 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:29:38,516 - Model - INFO - Train loss: 0.03953
+2026-02-08 13:29:38,517 - Model - INFO - Train F1 score: 0.99210
+2026-02-08 13:29:44,011 - Model - INFO - Val loss: 0.04148
+2026-02-08 13:29:44,011 - Model - INFO - Val F1 score: 0.99156
+2026-02-08 13:29:44,060 - Model - INFO - Epoch 63 (63/200):
+2026-02-08 13:29:44,060 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:30:34,032 - Model - INFO - Train loss: 0.04044
+2026-02-08 13:30:34,033 - Model - INFO - Train F1 score: 0.99188
+2026-02-08 13:30:39,424 - Model - INFO - Val loss: 0.04232
+2026-02-08 13:30:39,424 - Model - INFO - Val F1 score: 0.99142
+2026-02-08 13:30:39,467 - Model - INFO - Epoch 64 (64/200):
+2026-02-08 13:30:39,467 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:31:30,397 - Model - INFO - Train loss: 0.03865
+2026-02-08 13:31:30,397 - Model - INFO - Train F1 score: 0.99241
+2026-02-08 13:31:35,884 - Model - INFO - Val loss: 0.04055
+2026-02-08 13:31:35,885 - Model - INFO - Val F1 score: 0.99166
+2026-02-08 13:31:36,073 - Model - INFO - Epoch 65 (65/200):
+2026-02-08 13:31:36,073 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:32:27,362 - Model - INFO - Train loss: 0.03838
+2026-02-08 13:32:27,363 - Model - INFO - Train F1 score: 0.99250
+2026-02-08 13:32:32,947 - Model - INFO - Val loss: 0.04204
+2026-02-08 13:32:32,948 - Model - INFO - Val F1 score: 0.99148
+2026-02-08 13:32:32,949 - Model - INFO - Save checkpoint at epoch 65...
+2026-02-08 13:32:32,949 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_65.pth
+2026-02-08 13:32:33,099 - Model - INFO - Epoch 66 (66/200):
+2026-02-08 13:32:33,100 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:33:24,124 - Model - INFO - Train loss: 0.03858
+2026-02-08 13:33:24,130 - Model - INFO - Train F1 score: 0.99237
+2026-02-08 13:33:29,812 - Model - INFO - Val loss: 0.04142
+2026-02-08 13:33:29,812 - Model - INFO - Val F1 score: 0.99121
+2026-02-08 13:33:29,860 - Model - INFO - Epoch 67 (67/200):
+2026-02-08 13:33:29,860 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:34:20,880 - Model - INFO - Train loss: 0.03913
+2026-02-08 13:34:20,881 - Model - INFO - Train F1 score: 0.99226
+2026-02-08 13:34:26,535 - Model - INFO - Val loss: 0.04059
+2026-02-08 13:34:26,536 - Model - INFO - Val F1 score: 0.99172
+2026-02-08 13:34:26,585 - Model - INFO - Epoch 68 (68/200):
+2026-02-08 13:34:26,586 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:35:16,409 - Model - INFO - Train loss: 0.03824
+2026-02-08 13:35:16,410 - Model - INFO - Train F1 score: 0.99252
+2026-02-08 13:35:22,157 - Model - INFO - Val loss: 0.04484
+2026-02-08 13:35:22,158 - Model - INFO - Val F1 score: 0.99049
+2026-02-08 13:35:22,205 - Model - INFO - Epoch 69 (69/200):
+2026-02-08 13:35:22,205 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:36:13,938 - Model - INFO - Train loss: 0.04016
+2026-02-08 13:36:13,946 - Model - INFO - Train F1 score: 0.99182
+2026-02-08 13:36:19,754 - Model - INFO - Val loss: 0.04125
+2026-02-08 13:36:19,754 - Model - INFO - Val F1 score: 0.99139
+2026-02-08 13:36:19,806 - Model - INFO - Epoch 70 (70/200):
+2026-02-08 13:36:19,806 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:37:11,150 - Model - INFO - Train loss: 0.03804
+2026-02-08 13:37:11,151 - Model - INFO - Train F1 score: 0.99257
+2026-02-08 13:37:16,483 - Model - INFO - Val loss: 0.04086
+2026-02-08 13:37:16,483 - Model - INFO - Val F1 score: 0.99139
+2026-02-08 13:37:16,547 - Model - INFO - Save checkpoint at epoch 70...
+2026-02-08 13:37:16,547 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_70.pth
+2026-02-08 13:37:16,711 - Model - INFO - Epoch 71 (71/200):
+2026-02-08 13:37:16,712 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:38:06,623 - Model - INFO - Train loss: 0.03838
+2026-02-08 13:38:06,623 - Model - INFO - Train F1 score: 0.99245
+2026-02-08 13:38:12,254 - Model - INFO - Val loss: 0.04154
+2026-02-08 13:38:12,255 - Model - INFO - Val F1 score: 0.99128
+2026-02-08 13:38:12,318 - Model - INFO - Epoch 72 (72/200):
+2026-02-08 13:38:12,319 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:39:02,511 - Model - INFO - Train loss: 0.03890
+2026-02-08 13:39:02,553 - Model - INFO - Train F1 score: 0.99241
+2026-02-08 13:39:08,143 - Model - INFO - Val loss: 0.04128
+2026-02-08 13:39:08,143 - Model - INFO - Val F1 score: 0.99132
+2026-02-08 13:39:08,201 - Model - INFO - Epoch 73 (73/200):
+2026-02-08 13:39:08,201 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:39:57,781 - Model - INFO - Train loss: 0.08406
+2026-02-08 13:39:57,782 - Model - INFO - Train F1 score: 0.97935
+2026-02-08 13:40:03,256 - Model - INFO - Val loss: 0.09418
+2026-02-08 13:40:03,256 - Model - INFO - Val F1 score: 0.97665
+2026-02-08 13:40:03,326 - Model - INFO - Epoch 74 (74/200):
+2026-02-08 13:40:03,327 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:40:54,015 - Model - INFO - Train loss: 0.06760
+2026-02-08 13:40:54,016 - Model - INFO - Train F1 score: 0.98464
+2026-02-08 13:40:59,970 - Model - INFO - Val loss: 0.07543
+2026-02-08 13:40:59,970 - Model - INFO - Val F1 score: 0.98463
+2026-02-08 13:41:00,042 - Model - INFO - Epoch 75 (75/200):
+2026-02-08 13:41:00,043 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:41:51,231 - Model - INFO - Train loss: 0.05502
+2026-02-08 13:41:51,238 - Model - INFO - Train F1 score: 0.98808
+2026-02-08 13:41:56,664 - Model - INFO - Val loss: 0.05733
+2026-02-08 13:41:56,665 - Model - INFO - Val F1 score: 0.98804
+2026-02-08 13:41:56,666 - Model - INFO - Save checkpoint at epoch 75...
+2026-02-08 13:41:56,666 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_75.pth
+2026-02-08 13:41:56,887 - Model - INFO - Epoch 76 (76/200):
+2026-02-08 13:41:56,888 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:42:47,780 - Model - INFO - Train loss: 0.04840
+2026-02-08 13:42:47,781 - Model - INFO - Train F1 score: 0.98982
+2026-02-08 13:42:53,616 - Model - INFO - Val loss: 0.05297
+2026-02-08 13:42:53,617 - Model - INFO - Val F1 score: 0.98869
+2026-02-08 13:42:53,706 - Model - INFO - Epoch 77 (77/200):
+2026-02-08 13:42:53,706 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:43:44,453 - Model - INFO - Train loss: 0.04613
+2026-02-08 13:43:44,459 - Model - INFO - Train F1 score: 0.99043
+2026-02-08 13:43:50,293 - Model - INFO - Val loss: 0.04816
+2026-02-08 13:43:50,294 - Model - INFO - Val F1 score: 0.98957
+2026-02-08 13:43:50,333 - Model - INFO - Epoch 78 (78/200):
+2026-02-08 13:43:50,334 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:44:42,071 - Model - INFO - Train loss: 0.04364
+2026-02-08 13:44:42,091 - Model - INFO - Train F1 score: 0.99080
+2026-02-08 13:44:47,772 - Model - INFO - Val loss: 0.04814
+2026-02-08 13:44:47,772 - Model - INFO - Val F1 score: 0.99018
+2026-02-08 13:44:47,826 - Model - INFO - Epoch 79 (79/200):
+2026-02-08 13:44:47,827 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:45:38,917 - Model - INFO - Train loss: 0.04689
+2026-02-08 13:45:38,918 - Model - INFO - Train F1 score: 0.98985
+2026-02-08 13:45:44,390 - Model - INFO - Val loss: 0.04641
+2026-02-08 13:45:44,391 - Model - INFO - Val F1 score: 0.99021
+2026-02-08 13:45:44,436 - Model - INFO - Epoch 80 (80/200):
+2026-02-08 13:45:44,436 - Model - INFO - Learning rate:0.000729
+2026-02-08 13:46:35,413 - Model - INFO - Train loss: 0.04348
+2026-02-08 13:46:35,424 - Model - INFO - Train F1 score: 0.99106
+2026-02-08 13:46:41,424 - Model - INFO - Val loss: 0.04522
+2026-02-08 13:46:41,425 - Model - INFO - Val F1 score: 0.99044
+2026-02-08 13:46:41,437 - Model - INFO - Save checkpoint at epoch 80...
+2026-02-08 13:46:41,437 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_80.pth
+2026-02-08 13:46:41,577 - Model - INFO - Epoch 81 (81/200):
+2026-02-08 13:46:41,578 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:47:32,549 - Model - INFO - Train loss: 0.04213
+2026-02-08 13:47:32,550 - Model - INFO - Train F1 score: 0.99149
+2026-02-08 13:47:38,644 - Model - INFO - Val loss: 0.05321
+2026-02-08 13:47:38,645 - Model - INFO - Val F1 score: 0.98269
+2026-02-08 13:47:38,688 - Model - INFO - Epoch 82 (82/200):
+2026-02-08 13:47:38,688 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:48:30,410 - Model - INFO - Train loss: 0.04090
+2026-02-08 13:48:30,416 - Model - INFO - Train F1 score: 0.99183
+2026-02-08 13:48:36,266 - Model - INFO - Val loss: 0.04853
+2026-02-08 13:48:36,267 - Model - INFO - Val F1 score: 0.98966
+2026-02-08 13:48:36,313 - Model - INFO - Epoch 83 (83/200):
+2026-02-08 13:48:36,314 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:49:25,350 - Model - INFO - Train loss: 0.04072
+2026-02-08 13:49:25,350 - Model - INFO - Train F1 score: 0.99183
+2026-02-08 13:49:30,921 - Model - INFO - Val loss: 0.04160
+2026-02-08 13:49:30,922 - Model - INFO - Val F1 score: 0.99140
+2026-02-08 13:49:30,964 - Model - INFO - Epoch 84 (84/200):
+2026-02-08 13:49:30,964 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:50:21,730 - Model - INFO - Train loss: 0.04000
+2026-02-08 13:50:21,733 - Model - INFO - Train F1 score: 0.99189
+2026-02-08 13:50:27,462 - Model - INFO - Val loss: 0.04274
+2026-02-08 13:50:27,463 - Model - INFO - Val F1 score: 0.99103
+2026-02-08 13:50:27,514 - Model - INFO - Epoch 85 (85/200):
+2026-02-08 13:50:27,515 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:51:17,162 - Model - INFO - Train loss: 0.03943
+2026-02-08 13:51:17,163 - Model - INFO - Train F1 score: 0.99218
+2026-02-08 13:51:23,167 - Model - INFO - Val loss: 0.04574
+2026-02-08 13:51:23,167 - Model - INFO - Val F1 score: 0.99089
+2026-02-08 13:51:23,168 - Model - INFO - Save checkpoint at epoch 85...
+2026-02-08 13:51:23,168 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_85.pth
+2026-02-08 13:51:23,320 - Model - INFO - Epoch 86 (86/200):
+2026-02-08 13:51:23,321 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:52:14,198 - Model - INFO - Train loss: 0.03854
+2026-02-08 13:52:14,207 - Model - INFO - Train F1 score: 0.99244
+2026-02-08 13:52:20,141 - Model - INFO - Val loss: 0.04200
+2026-02-08 13:52:20,141 - Model - INFO - Val F1 score: 0.99164
+2026-02-08 13:52:20,193 - Model - INFO - Epoch 87 (87/200):
+2026-02-08 13:52:20,193 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:53:10,522 - Model - INFO - Train loss: 0.03870
+2026-02-08 13:53:10,523 - Model - INFO - Train F1 score: 0.99239
+2026-02-08 13:53:16,582 - Model - INFO - Val loss: 0.04173
+2026-02-08 13:53:16,583 - Model - INFO - Val F1 score: 0.99140
+2026-02-08 13:53:16,630 - Model - INFO - Epoch 88 (88/200):
+2026-02-08 13:53:16,631 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:54:06,696 - Model - INFO - Train loss: 0.03869
+2026-02-08 13:54:06,698 - Model - INFO - Train F1 score: 0.99226
+2026-02-08 13:54:12,254 - Model - INFO - Val loss: 0.04216
+2026-02-08 13:54:12,254 - Model - INFO - Val F1 score: 0.99122
+2026-02-08 13:54:12,308 - Model - INFO - Epoch 89 (89/200):
+2026-02-08 13:54:12,308 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:55:02,896 - Model - INFO - Train loss: 0.04134
+2026-02-08 13:55:02,898 - Model - INFO - Train F1 score: 0.99162
+2026-02-08 13:55:08,759 - Model - INFO - Val loss: 0.04327
+2026-02-08 13:55:08,759 - Model - INFO - Val F1 score: 0.99073
+2026-02-08 13:55:08,839 - Model - INFO - Epoch 90 (90/200):
+2026-02-08 13:55:08,840 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:55:58,928 - Model - INFO - Train loss: 0.04051
+2026-02-08 13:55:58,929 - Model - INFO - Train F1 score: 0.99178
+2026-02-08 13:56:04,282 - Model - INFO - Val loss: 0.04230
+2026-02-08 13:56:04,282 - Model - INFO - Val F1 score: 0.99107
+2026-02-08 13:56:04,312 - Model - INFO - Save checkpoint at epoch 90...
+2026-02-08 13:56:04,313 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_90.pth
+2026-02-08 13:56:05,161 - Model - INFO - Epoch 91 (91/200):
+2026-02-08 13:56:05,162 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:56:55,270 - Model - INFO - Train loss: 0.05080
+2026-02-08 13:56:55,271 - Model - INFO - Train F1 score: 0.98938
+2026-02-08 13:57:00,847 - Model - INFO - Val loss: 0.04669
+2026-02-08 13:57:00,847 - Model - INFO - Val F1 score: 0.98906
+2026-02-08 13:57:00,890 - Model - INFO - Epoch 92 (92/200):
+2026-02-08 13:57:00,891 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:57:52,235 - Model - INFO - Train loss: 0.03887
+2026-02-08 13:57:52,237 - Model - INFO - Train F1 score: 0.99223
+2026-02-08 13:57:58,043 - Model - INFO - Val loss: 0.04091
+2026-02-08 13:57:58,044 - Model - INFO - Val F1 score: 0.99141
+2026-02-08 13:57:58,092 - Model - INFO - Epoch 93 (93/200):
+2026-02-08 13:57:58,092 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:58:48,646 - Model - INFO - Train loss: 0.03819
+2026-02-08 13:58:48,647 - Model - INFO - Train F1 score: 0.99241
+2026-02-08 13:58:54,407 - Model - INFO - Val loss: 0.04090
+2026-02-08 13:58:54,408 - Model - INFO - Val F1 score: 0.99157
+2026-02-08 13:58:54,458 - Model - INFO - Epoch 94 (94/200):
+2026-02-08 13:58:54,458 - Model - INFO - Learning rate:0.000656
+2026-02-08 13:59:46,258 - Model - INFO - Train loss: 0.04204
+2026-02-08 13:59:46,259 - Model - INFO - Train F1 score: 0.99135
+2026-02-08 13:59:52,109 - Model - INFO - Val loss: 0.04802
+2026-02-08 13:59:52,109 - Model - INFO - Val F1 score: 0.98817
+2026-02-08 13:59:52,154 - Model - INFO - Epoch 95 (95/200):
+2026-02-08 13:59:52,155 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:00:41,315 - Model - INFO - Train loss: 0.04125
+2026-02-08 14:00:41,315 - Model - INFO - Train F1 score: 0.99176
+2026-02-08 14:00:47,064 - Model - INFO - Val loss: 0.04124
+2026-02-08 14:00:47,068 - Model - INFO - Val F1 score: 0.99155
+2026-02-08 14:00:47,070 - Model - INFO - Save checkpoint at epoch 95...
+2026-02-08 14:00:47,070 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_95.pth
+2026-02-08 14:00:47,307 - Model - INFO - Epoch 96 (96/200):
+2026-02-08 14:00:47,308 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:01:38,409 - Model - INFO - Train loss: 0.03847
+2026-02-08 14:01:38,431 - Model - INFO - Train F1 score: 0.99229
+2026-02-08 14:01:44,341 - Model - INFO - Val loss: 0.04195
+2026-02-08 14:01:44,342 - Model - INFO - Val F1 score: 0.99113
+2026-02-08 14:01:44,392 - Model - INFO - Epoch 97 (97/200):
+2026-02-08 14:01:44,393 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:02:36,308 - Model - INFO - Train loss: 0.03735
+2026-02-08 14:02:36,309 - Model - INFO - Train F1 score: 0.99281
+2026-02-08 14:02:42,179 - Model - INFO - Val loss: 0.04089
+2026-02-08 14:02:42,180 - Model - INFO - Val F1 score: 0.99183
+2026-02-08 14:02:42,222 - Model - INFO - Epoch 98 (98/200):
+2026-02-08 14:02:42,222 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:03:33,304 - Model - INFO - Train loss: 0.03798
+2026-02-08 14:03:33,305 - Model - INFO - Train F1 score: 0.99251
+2026-02-08 14:03:38,929 - Model - INFO - Val loss: 0.04233
+2026-02-08 14:03:38,929 - Model - INFO - Val F1 score: 0.99118
+2026-02-08 14:03:38,977 - Model - INFO - Epoch 99 (99/200):
+2026-02-08 14:03:38,978 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:04:29,145 - Model - INFO - Train loss: 0.03731
+2026-02-08 14:04:29,153 - Model - INFO - Train F1 score: 0.99268
+2026-02-08 14:04:34,894 - Model - INFO - Val loss: 0.03918
+2026-02-08 14:04:34,895 - Model - INFO - Val F1 score: 0.99194
+2026-02-08 14:04:34,944 - Model - INFO - Epoch 100 (100/200):
+2026-02-08 14:04:34,945 - Model - INFO - Learning rate:0.000656
+2026-02-08 14:05:25,937 - Model - INFO - Train loss: 0.03673
+2026-02-08 14:05:25,938 - Model - INFO - Train F1 score: 0.99278
+2026-02-08 14:05:31,756 - Model - INFO - Val loss: 0.03911
+2026-02-08 14:05:31,763 - Model - INFO - Val F1 score: 0.99210
+2026-02-08 14:05:31,789 - Model - INFO - Save checkpoint at epoch 100...
+2026-02-08 14:05:31,790 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_100.pth
+2026-02-08 14:05:31,943 - Model - INFO - Epoch 101 (101/200):
+2026-02-08 14:05:31,944 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:06:22,980 - Model - INFO - Train loss: 0.03720
+2026-02-08 14:06:22,980 - Model - INFO - Train F1 score: 0.99268
+2026-02-08 14:06:28,485 - Model - INFO - Val loss: 0.03880
+2026-02-08 14:06:28,485 - Model - INFO - Val F1 score: 0.99203
+2026-02-08 14:06:28,525 - Model - INFO - Epoch 102 (102/200):
+2026-02-08 14:06:28,526 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:07:18,482 - Model - INFO - Train loss: 0.03593
+2026-02-08 14:07:18,483 - Model - INFO - Train F1 score: 0.99305
+2026-02-08 14:07:24,169 - Model - INFO - Val loss: 0.03829
+2026-02-08 14:07:24,170 - Model - INFO - Val F1 score: 0.99232
+2026-02-08 14:07:24,225 - Model - INFO - Epoch 103 (103/200):
+2026-02-08 14:07:24,226 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:08:15,592 - Model - INFO - Train loss: 0.03585
+2026-02-08 14:08:15,593 - Model - INFO - Train F1 score: 0.99308
+2026-02-08 14:08:21,660 - Model - INFO - Val loss: 0.04139
+2026-02-08 14:08:21,661 - Model - INFO - Val F1 score: 0.99097
+2026-02-08 14:08:21,767 - Model - INFO - Epoch 104 (104/200):
+2026-02-08 14:08:21,768 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:09:12,007 - Model - INFO - Train loss: 0.03573
+2026-02-08 14:09:12,009 - Model - INFO - Train F1 score: 0.99309
+2026-02-08 14:09:18,144 - Model - INFO - Val loss: 0.03955
+2026-02-08 14:09:18,145 - Model - INFO - Val F1 score: 0.99191
+2026-02-08 14:09:18,222 - Model - INFO - Epoch 105 (105/200):
+2026-02-08 14:09:18,223 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:10:07,480 - Model - INFO - Train loss: 0.03611
+2026-02-08 14:10:07,481 - Model - INFO - Train F1 score: 0.99295
+2026-02-08 14:10:13,087 - Model - INFO - Val loss: 0.04079
+2026-02-08 14:10:13,088 - Model - INFO - Val F1 score: 0.99173
+2026-02-08 14:10:13,089 - Model - INFO - Save checkpoint at epoch 105...
+2026-02-08 14:10:13,089 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_105.pth
+2026-02-08 14:10:13,238 - Model - INFO - Epoch 106 (106/200):
+2026-02-08 14:10:13,239 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:11:03,777 - Model - INFO - Train loss: 0.03685
+2026-02-08 14:11:03,779 - Model - INFO - Train F1 score: 0.99286
+2026-02-08 14:11:09,751 - Model - INFO - Val loss: 0.03950
+2026-02-08 14:11:09,751 - Model - INFO - Val F1 score: 0.99175
+2026-02-08 14:11:10,310 - Model - INFO - Epoch 107 (107/200):
+2026-02-08 14:11:10,311 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:11:59,408 - Model - INFO - Train loss: 0.03983
+2026-02-08 14:11:59,409 - Model - INFO - Train F1 score: 0.99212
+2026-02-08 14:12:05,006 - Model - INFO - Val loss: 0.04241
+2026-02-08 14:12:05,008 - Model - INFO - Val F1 score: 0.99137
+2026-02-08 14:12:05,054 - Model - INFO - Epoch 108 (108/200):
+2026-02-08 14:12:05,055 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:12:56,700 - Model - INFO - Train loss: 0.03664
+2026-02-08 14:12:56,701 - Model - INFO - Train F1 score: 0.99287
+2026-02-08 14:13:02,545 - Model - INFO - Val loss: 0.04314
+2026-02-08 14:13:02,546 - Model - INFO - Val F1 score: 0.99123
+2026-02-08 14:13:02,858 - Model - INFO - Epoch 109 (109/200):
+2026-02-08 14:13:02,859 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:13:53,398 - Model - INFO - Train loss: 0.03787
+2026-02-08 14:13:53,399 - Model - INFO - Train F1 score: 0.99260
+2026-02-08 14:13:59,213 - Model - INFO - Val loss: 0.03968
+2026-02-08 14:13:59,214 - Model - INFO - Val F1 score: 0.99192
+2026-02-08 14:13:59,256 - Model - INFO - Epoch 110 (110/200):
+2026-02-08 14:13:59,256 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:14:50,368 - Model - INFO - Train loss: 0.03637
+2026-02-08 14:14:50,369 - Model - INFO - Train F1 score: 0.99292
+2026-02-08 14:14:56,299 - Model - INFO - Val loss: 0.03939
+2026-02-08 14:14:56,301 - Model - INFO - Val F1 score: 0.99213
+2026-02-08 14:14:56,322 - Model - INFO - Save checkpoint at epoch 110...
+2026-02-08 14:14:56,323 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_110.pth
+2026-02-08 14:14:56,502 - Model - INFO - Epoch 111 (111/200):
+2026-02-08 14:14:56,512 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:15:46,249 - Model - INFO - Train loss: 0.03544
+2026-02-08 14:15:46,252 - Model - INFO - Train F1 score: 0.99319
+2026-02-08 14:15:51,742 - Model - INFO - Val loss: 0.03774
+2026-02-08 14:15:51,743 - Model - INFO - Val F1 score: 0.99247
+2026-02-08 14:15:51,794 - Model - INFO - Epoch 112 (112/200):
+2026-02-08 14:15:51,795 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:16:40,774 - Model - INFO - Train loss: 0.03755
+2026-02-08 14:16:40,776 - Model - INFO - Train F1 score: 0.99258
+2026-02-08 14:16:46,668 - Model - INFO - Val loss: 0.03968
+2026-02-08 14:16:46,670 - Model - INFO - Val F1 score: 0.99176
+2026-02-08 14:16:46,743 - Model - INFO - Epoch 113 (113/200):
+2026-02-08 14:16:46,743 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:17:38,304 - Model - INFO - Train loss: 0.03600
+2026-02-08 14:17:38,324 - Model - INFO - Train F1 score: 0.99307
+2026-02-08 14:17:43,975 - Model - INFO - Val loss: 0.03722
+2026-02-08 14:17:43,976 - Model - INFO - Val F1 score: 0.99238
+2026-02-08 14:17:44,024 - Model - INFO - Epoch 114 (114/200):
+2026-02-08 14:17:44,025 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:18:33,392 - Model - INFO - Train loss: 0.03497
+2026-02-08 14:18:33,392 - Model - INFO - Train F1 score: 0.99330
+2026-02-08 14:18:38,807 - Model - INFO - Val loss: 0.03895
+2026-02-08 14:18:38,808 - Model - INFO - Val F1 score: 0.99191
+2026-02-08 14:18:38,873 - Model - INFO - Epoch 115 (115/200):
+2026-02-08 14:18:38,874 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:19:30,068 - Model - INFO - Train loss: 0.03566
+2026-02-08 14:19:30,071 - Model - INFO - Train F1 score: 0.99309
+2026-02-08 14:19:35,733 - Model - INFO - Val loss: 0.03770
+2026-02-08 14:19:35,734 - Model - INFO - Val F1 score: 0.99212
+2026-02-08 14:19:35,734 - Model - INFO - Save checkpoint at epoch 115...
+2026-02-08 14:19:35,735 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_115.pth
+2026-02-08 14:19:35,925 - Model - INFO - Epoch 116 (116/200):
+2026-02-08 14:19:35,939 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:20:26,283 - Model - INFO - Train loss: 0.03636
+2026-02-08 14:20:26,284 - Model - INFO - Train F1 score: 0.99298
+2026-02-08 14:20:31,834 - Model - INFO - Val loss: 0.03881
+2026-02-08 14:20:31,834 - Model - INFO - Val F1 score: 0.99202
+2026-02-08 14:20:31,916 - Model - INFO - Epoch 117 (117/200):
+2026-02-08 14:20:31,917 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:21:22,435 - Model - INFO - Train loss: 0.03785
+2026-02-08 14:21:22,436 - Model - INFO - Train F1 score: 0.99259
+2026-02-08 14:21:28,149 - Model - INFO - Val loss: 0.03995
+2026-02-08 14:21:28,150 - Model - INFO - Val F1 score: 0.99184
+2026-02-08 14:21:28,192 - Model - INFO - Epoch 118 (118/200):
+2026-02-08 14:21:28,192 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:22:17,293 - Model - INFO - Train loss: 0.03679
+2026-02-08 14:22:17,294 - Model - INFO - Train F1 score: 0.99284
+2026-02-08 14:22:23,266 - Model - INFO - Val loss: 0.03843
+2026-02-08 14:22:23,267 - Model - INFO - Val F1 score: 0.99225
+2026-02-08 14:22:23,318 - Model - INFO - Epoch 119 (119/200):
+2026-02-08 14:22:23,319 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:23:15,177 - Model - INFO - Train loss: 0.03612
+2026-02-08 14:23:15,177 - Model - INFO - Train F1 score: 0.99297
+2026-02-08 14:23:20,874 - Model - INFO - Val loss: 0.03823
+2026-02-08 14:23:20,875 - Model - INFO - Val F1 score: 0.99186
+2026-02-08 14:23:20,936 - Model - INFO - Epoch 120 (120/200):
+2026-02-08 14:23:20,937 - Model - INFO - Learning rate:0.000590
+2026-02-08 14:24:12,209 - Model - INFO - Train loss: 0.03544
+2026-02-08 14:24:12,231 - Model - INFO - Train F1 score: 0.99314
+2026-02-08 14:24:17,792 - Model - INFO - Val loss: 0.03736
+2026-02-08 14:24:17,792 - Model - INFO - Val F1 score: 0.99223
+2026-02-08 14:24:17,807 - Model - INFO - Save checkpoint at epoch 120...
+2026-02-08 14:24:17,807 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_120.pth
+2026-02-08 14:24:18,003 - Model - INFO - Epoch 121 (121/200):
+2026-02-08 14:24:18,004 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:25:07,685 - Model - INFO - Train loss: 0.03588
+2026-02-08 14:25:07,686 - Model - INFO - Train F1 score: 0.99305
+2026-02-08 14:25:13,190 - Model - INFO - Val loss: 0.04655
+2026-02-08 14:25:13,191 - Model - INFO - Val F1 score: 0.98905
+2026-02-08 14:25:13,237 - Model - INFO - Epoch 122 (122/200):
+2026-02-08 14:25:13,238 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:26:04,918 - Model - INFO - Train loss: 0.03820
+2026-02-08 14:26:04,918 - Model - INFO - Train F1 score: 0.99238
+2026-02-08 14:26:10,470 - Model - INFO - Val loss: 0.03845
+2026-02-08 14:26:10,470 - Model - INFO - Val F1 score: 0.99195
+2026-02-08 14:26:10,588 - Model - INFO - Epoch 123 (123/200):
+2026-02-08 14:26:10,588 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:27:01,726 - Model - INFO - Train loss: 0.03581
+2026-02-08 14:27:01,726 - Model - INFO - Train F1 score: 0.99299
+2026-02-08 14:27:08,304 - Model - INFO - Val loss: 0.03960
+2026-02-08 14:27:08,306 - Model - INFO - Val F1 score: 0.99206
+2026-02-08 14:27:08,360 - Model - INFO - Epoch 124 (124/200):
+2026-02-08 14:27:08,361 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:27:58,329 - Model - INFO - Train loss: 0.03511
+2026-02-08 14:27:58,330 - Model - INFO - Train F1 score: 0.99326
+2026-02-08 14:28:04,232 - Model - INFO - Val loss: 0.03698
+2026-02-08 14:28:04,239 - Model - INFO - Val F1 score: 0.99251
+2026-02-08 14:28:04,292 - Model - INFO - Epoch 125 (125/200):
+2026-02-08 14:28:04,293 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:28:54,821 - Model - INFO - Train loss: 0.03550
+2026-02-08 14:28:54,822 - Model - INFO - Train F1 score: 0.99316
+2026-02-08 14:29:00,532 - Model - INFO - Val loss: 0.03799
+2026-02-08 14:29:00,533 - Model - INFO - Val F1 score: 0.99223
+2026-02-08 14:29:00,534 - Model - INFO - Save checkpoint at epoch 125...
+2026-02-08 14:29:00,534 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_125.pth
+2026-02-08 14:29:00,687 - Model - INFO - Epoch 126 (126/200):
+2026-02-08 14:29:00,688 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:29:52,075 - Model - INFO - Train loss: 0.03569
+2026-02-08 14:29:52,076 - Model - INFO - Train F1 score: 0.99308
+2026-02-08 14:29:57,651 - Model - INFO - Val loss: 0.03623
+2026-02-08 14:29:57,651 - Model - INFO - Val F1 score: 0.99286
+2026-02-08 14:29:57,699 - Model - INFO - Epoch 127 (127/200):
+2026-02-08 14:29:57,699 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:30:48,886 - Model - INFO - Train loss: 0.03494
+2026-02-08 14:30:48,886 - Model - INFO - Train F1 score: 0.99335
+2026-02-08 14:30:54,657 - Model - INFO - Val loss: 0.03547
+2026-02-08 14:30:54,658 - Model - INFO - Val F1 score: 0.99286
+2026-02-08 14:30:54,709 - Model - INFO - Epoch 128 (128/200):
+2026-02-08 14:30:54,709 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:31:46,120 - Model - INFO - Train loss: 0.03449
+2026-02-08 14:31:46,121 - Model - INFO - Train F1 score: 0.99347
+2026-02-08 14:31:51,720 - Model - INFO - Val loss: 0.03711
+2026-02-08 14:31:51,721 - Model - INFO - Val F1 score: 0.99245
+2026-02-08 14:31:51,779 - Model - INFO - Epoch 129 (129/200):
+2026-02-08 14:31:51,779 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:32:42,937 - Model - INFO - Train loss: 0.03468
+2026-02-08 14:32:42,937 - Model - INFO - Train F1 score: 0.99339
+2026-02-08 14:32:48,444 - Model - INFO - Val loss: 0.03643
+2026-02-08 14:32:48,445 - Model - INFO - Val F1 score: 0.99249
+2026-02-08 14:32:48,486 - Model - INFO - Epoch 130 (130/200):
+2026-02-08 14:32:48,487 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:33:39,310 - Model - INFO - Train loss: 0.03491
+2026-02-08 14:33:39,331 - Model - INFO - Train F1 score: 0.99330
+2026-02-08 14:33:44,881 - Model - INFO - Val loss: 0.03626
+2026-02-08 14:33:44,881 - Model - INFO - Val F1 score: 0.99264
+2026-02-08 14:33:44,912 - Model - INFO - Save checkpoint at epoch 130...
+2026-02-08 14:33:44,912 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_130.pth
+2026-02-08 14:33:45,041 - Model - INFO - Epoch 131 (131/200):
+2026-02-08 14:33:45,042 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:34:35,376 - Model - INFO - Train loss: 0.03481
+2026-02-08 14:34:35,383 - Model - INFO - Train F1 score: 0.99333
+2026-02-08 14:34:41,124 - Model - INFO - Val loss: 0.03653
+2026-02-08 14:34:41,124 - Model - INFO - Val F1 score: 0.99253
+2026-02-08 14:34:41,189 - Model - INFO - Epoch 132 (132/200):
+2026-02-08 14:34:41,190 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:35:32,448 - Model - INFO - Train loss: 0.03552
+2026-02-08 14:35:32,449 - Model - INFO - Train F1 score: 0.99308
+2026-02-08 14:35:38,613 - Model - INFO - Val loss: 0.04232
+2026-02-08 14:35:38,613 - Model - INFO - Val F1 score: 0.99194
+2026-02-08 14:35:38,672 - Model - INFO - Epoch 133 (133/200):
+2026-02-08 14:35:38,672 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:36:30,342 - Model - INFO - Train loss: 0.03524
+2026-02-08 14:36:30,345 - Model - INFO - Train F1 score: 0.99328
+2026-02-08 14:36:36,386 - Model - INFO - Val loss: 0.03799
+2026-02-08 14:36:36,387 - Model - INFO - Val F1 score: 0.99222
+2026-02-08 14:36:36,435 - Model - INFO - Epoch 134 (134/200):
+2026-02-08 14:36:36,436 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:37:28,363 - Model - INFO - Train loss: 0.03437
+2026-02-08 14:37:28,364 - Model - INFO - Train F1 score: 0.99345
+2026-02-08 14:37:34,348 - Model - INFO - Val loss: 0.03628
+2026-02-08 14:37:34,348 - Model - INFO - Val F1 score: 0.99281
+2026-02-08 14:37:34,398 - Model - INFO - Epoch 135 (135/200):
+2026-02-08 14:37:34,398 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:38:25,052 - Model - INFO - Train loss: 0.03442
+2026-02-08 14:38:25,052 - Model - INFO - Train F1 score: 0.99354
+2026-02-08 14:38:30,651 - Model - INFO - Val loss: 0.03728
+2026-02-08 14:38:30,652 - Model - INFO - Val F1 score: 0.99266
+2026-02-08 14:38:30,652 - Model - INFO - Save checkpoint at epoch 135...
+2026-02-08 14:38:30,653 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_135.pth
+2026-02-08 14:38:30,803 - Model - INFO - Epoch 136 (136/200):
+2026-02-08 14:38:30,804 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:39:22,973 - Model - INFO - Train loss: 0.03551
+2026-02-08 14:39:22,976 - Model - INFO - Train F1 score: 0.99314
+2026-02-08 14:39:28,940 - Model - INFO - Val loss: 0.03687
+2026-02-08 14:39:28,940 - Model - INFO - Val F1 score: 0.99247
+2026-02-08 14:39:29,003 - Model - INFO - Epoch 137 (137/200):
+2026-02-08 14:39:29,003 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:40:20,532 - Model - INFO - Train loss: 0.03666
+2026-02-08 14:40:20,536 - Model - INFO - Train F1 score: 0.99281
+2026-02-08 14:40:26,511 - Model - INFO - Val loss: 0.03931
+2026-02-08 14:40:26,512 - Model - INFO - Val F1 score: 0.99214
+2026-02-08 14:40:26,554 - Model - INFO - Epoch 138 (138/200):
+2026-02-08 14:40:26,555 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:41:17,342 - Model - INFO - Train loss: 0.03580
+2026-02-08 14:41:17,343 - Model - INFO - Train F1 score: 0.99308
+2026-02-08 14:41:22,924 - Model - INFO - Val loss: 0.03739
+2026-02-08 14:41:22,925 - Model - INFO - Val F1 score: 0.99244
+2026-02-08 14:41:22,980 - Model - INFO - Epoch 139 (139/200):
+2026-02-08 14:41:22,980 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:42:13,963 - Model - INFO - Train loss: 0.03607
+2026-02-08 14:42:13,976 - Model - INFO - Train F1 score: 0.99293
+2026-02-08 14:42:19,828 - Model - INFO - Val loss: 0.03557
+2026-02-08 14:42:19,829 - Model - INFO - Val F1 score: 0.99270
+2026-02-08 14:42:19,907 - Model - INFO - Epoch 140 (140/200):
+2026-02-08 14:42:19,907 - Model - INFO - Learning rate:0.000531
+2026-02-08 14:43:11,306 - Model - INFO - Train loss: 0.03444
+2026-02-08 14:43:11,307 - Model - INFO - Train F1 score: 0.99337
+2026-02-08 14:43:17,153 - Model - INFO - Val loss: 0.03581
+2026-02-08 14:43:17,154 - Model - INFO - Val F1 score: 0.99253
+2026-02-08 14:43:17,167 - Model - INFO - Save checkpoint at epoch 140...
+2026-02-08 14:43:17,167 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_140.pth
+2026-02-08 14:43:17,291 - Model - INFO - Epoch 141 (141/200):
+2026-02-08 14:43:17,292 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:44:08,129 - Model - INFO - Train loss: 0.03487
+2026-02-08 14:44:08,130 - Model - INFO - Train F1 score: 0.99335
+2026-02-08 14:44:13,628 - Model - INFO - Val loss: 0.03684
+2026-02-08 14:44:13,629 - Model - INFO - Val F1 score: 0.99253
+2026-02-08 14:44:13,673 - Model - INFO - Epoch 142 (142/200):
+2026-02-08 14:44:13,674 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:45:05,400 - Model - INFO - Train loss: 0.03505
+2026-02-08 14:45:05,400 - Model - INFO - Train F1 score: 0.99326
+2026-02-08 14:45:11,520 - Model - INFO - Val loss: 0.03852
+2026-02-08 14:45:11,521 - Model - INFO - Val F1 score: 0.99226
+2026-02-08 14:45:11,589 - Model - INFO - Epoch 143 (143/200):
+2026-02-08 14:45:11,590 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:46:02,536 - Model - INFO - Train loss: 0.03480
+2026-02-08 14:46:02,544 - Model - INFO - Train F1 score: 0.99332
+2026-02-08 14:46:09,125 - Model - INFO - Val loss: 0.03697
+2026-02-08 14:46:09,126 - Model - INFO - Val F1 score: 0.99233
+2026-02-08 14:46:09,218 - Model - INFO - Epoch 144 (144/200):
+2026-02-08 14:46:09,219 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:46:59,534 - Model - INFO - Train loss: 0.03362
+2026-02-08 14:46:59,537 - Model - INFO - Train F1 score: 0.99360
+2026-02-08 14:47:05,468 - Model - INFO - Val loss: 0.03623
+2026-02-08 14:47:05,469 - Model - INFO - Val F1 score: 0.99283
+2026-02-08 14:47:05,525 - Model - INFO - Epoch 145 (145/200):
+2026-02-08 14:47:05,526 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:47:55,670 - Model - INFO - Train loss: 0.03565
+2026-02-08 14:47:55,671 - Model - INFO - Train F1 score: 0.99302
+2026-02-08 14:48:01,480 - Model - INFO - Val loss: 0.03812
+2026-02-08 14:48:01,481 - Model - INFO - Val F1 score: 0.99216
+2026-02-08 14:48:01,482 - Model - INFO - Save checkpoint at epoch 145...
+2026-02-08 14:48:01,482 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_145.pth
+2026-02-08 14:48:01,658 - Model - INFO - Epoch 146 (146/200):
+2026-02-08 14:48:01,659 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:48:51,699 - Model - INFO - Train loss: 0.03760
+2026-02-08 14:48:51,706 - Model - INFO - Train F1 score: 0.99252
+2026-02-08 14:48:57,738 - Model - INFO - Val loss: 0.04258
+2026-02-08 14:48:57,739 - Model - INFO - Val F1 score: 0.99064
+2026-02-08 14:48:57,798 - Model - INFO - Epoch 147 (147/200):
+2026-02-08 14:48:57,798 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:49:49,075 - Model - INFO - Train loss: 0.03535
+2026-02-08 14:49:49,076 - Model - INFO - Train F1 score: 0.99317
+2026-02-08 14:49:54,877 - Model - INFO - Val loss: 0.03916
+2026-02-08 14:49:54,878 - Model - INFO - Val F1 score: 0.99222
+2026-02-08 14:49:54,924 - Model - INFO - Epoch 148 (148/200):
+2026-02-08 14:49:54,925 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:50:44,686 - Model - INFO - Train loss: 0.03578
+2026-02-08 14:50:44,691 - Model - INFO - Train F1 score: 0.99307
+2026-02-08 14:50:50,820 - Model - INFO - Val loss: 0.03821
+2026-02-08 14:50:50,820 - Model - INFO - Val F1 score: 0.99237
+2026-02-08 14:50:50,886 - Model - INFO - Epoch 149 (149/200):
+2026-02-08 14:50:50,887 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:51:42,342 - Model - INFO - Train loss: 0.03538
+2026-02-08 14:51:42,343 - Model - INFO - Train F1 score: 0.99317
+2026-02-08 14:51:47,964 - Model - INFO - Val loss: 0.03692
+2026-02-08 14:51:47,965 - Model - INFO - Val F1 score: 0.99259
+2026-02-08 14:51:48,009 - Model - INFO - Epoch 150 (150/200):
+2026-02-08 14:51:48,010 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:52:37,235 - Model - INFO - Train loss: 0.03633
+2026-02-08 14:52:37,242 - Model - INFO - Train F1 score: 0.99284
+2026-02-08 14:52:43,079 - Model - INFO - Val loss: 0.03818
+2026-02-08 14:52:43,080 - Model - INFO - Val F1 score: 0.99214
+2026-02-08 14:52:43,091 - Model - INFO - Save checkpoint at epoch 150...
+2026-02-08 14:52:43,092 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_150.pth
+2026-02-08 14:52:43,222 - Model - INFO - Epoch 151 (151/200):
+2026-02-08 14:52:43,223 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:53:33,803 - Model - INFO - Train loss: 0.03512
+2026-02-08 14:53:33,824 - Model - INFO - Train F1 score: 0.99336
+2026-02-08 14:53:39,819 - Model - INFO - Val loss: 0.03622
+2026-02-08 14:53:39,820 - Model - INFO - Val F1 score: 0.99264
+2026-02-08 14:53:39,861 - Model - INFO - Epoch 152 (152/200):
+2026-02-08 14:53:39,862 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:54:30,542 - Model - INFO - Train loss: 0.03487
+2026-02-08 14:54:30,543 - Model - INFO - Train F1 score: 0.99315
+2026-02-08 14:54:36,373 - Model - INFO - Val loss: 0.03712
+2026-02-08 14:54:36,374 - Model - INFO - Val F1 score: 0.99243
+2026-02-08 14:54:36,431 - Model - INFO - Epoch 153 (153/200):
+2026-02-08 14:54:36,432 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:55:27,215 - Model - INFO - Train loss: 0.03432
+2026-02-08 14:55:27,216 - Model - INFO - Train F1 score: 0.99342
+2026-02-08 14:55:33,433 - Model - INFO - Val loss: 0.03683
+2026-02-08 14:55:33,434 - Model - INFO - Val F1 score: 0.99254
+2026-02-08 14:55:33,503 - Model - INFO - Epoch 154 (154/200):
+2026-02-08 14:55:33,503 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:56:24,967 - Model - INFO - Train loss: 0.03418
+2026-02-08 14:56:24,976 - Model - INFO - Train F1 score: 0.99345
+2026-02-08 14:56:31,062 - Model - INFO - Val loss: 0.03674
+2026-02-08 14:56:31,068 - Model - INFO - Val F1 score: 0.99261
+2026-02-08 14:56:31,124 - Model - INFO - Epoch 155 (155/200):
+2026-02-08 14:56:31,124 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:57:22,331 - Model - INFO - Train loss: 0.03414
+2026-02-08 14:57:22,332 - Model - INFO - Train F1 score: 0.99357
+2026-02-08 14:57:28,121 - Model - INFO - Val loss: 0.03573
+2026-02-08 14:57:28,122 - Model - INFO - Val F1 score: 0.99258
+2026-02-08 14:57:28,123 - Model - INFO - Save checkpoint at epoch 155...
+2026-02-08 14:57:28,123 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_155.pth
+2026-02-08 14:57:28,278 - Model - INFO - Epoch 156 (156/200):
+2026-02-08 14:57:28,278 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:58:19,960 - Model - INFO - Train loss: 0.03411
+2026-02-08 14:58:19,961 - Model - INFO - Train F1 score: 0.99344
+2026-02-08 14:58:26,009 - Model - INFO - Val loss: 0.03615
+2026-02-08 14:58:26,010 - Model - INFO - Val F1 score: 0.99272
+2026-02-08 14:58:26,057 - Model - INFO - Epoch 157 (157/200):
+2026-02-08 14:58:26,058 - Model - INFO - Learning rate:0.000478
+2026-02-08 14:59:16,722 - Model - INFO - Train loss: 0.03448
+2026-02-08 14:59:16,727 - Model - INFO - Train F1 score: 0.99344
+2026-02-08 14:59:22,577 - Model - INFO - Val loss: 0.03611
+2026-02-08 14:59:22,578 - Model - INFO - Val F1 score: 0.99250
+2026-02-08 14:59:22,627 - Model - INFO - Epoch 158 (158/200):
+2026-02-08 14:59:22,627 - Model - INFO - Learning rate:0.000478
+2026-02-08 15:00:13,188 - Model - INFO - Train loss: 0.03462
+2026-02-08 15:00:13,189 - Model - INFO - Train F1 score: 0.99334
+2026-02-08 15:00:18,583 - Model - INFO - Val loss: 0.03605
+2026-02-08 15:00:18,584 - Model - INFO - Val F1 score: 0.99284
+2026-02-08 15:00:18,692 - Model - INFO - Epoch 159 (159/200):
+2026-02-08 15:00:18,698 - Model - INFO - Learning rate:0.000478
+2026-02-08 15:01:07,704 - Model - INFO - Train loss: 0.03401
+2026-02-08 15:01:07,706 - Model - INFO - Train F1 score: 0.99343
+2026-02-08 15:01:13,324 - Model - INFO - Val loss: 0.03677
+2026-02-08 15:01:13,325 - Model - INFO - Val F1 score: 0.99237
+2026-02-08 15:01:13,481 - Model - INFO - Epoch 160 (160/200):
+2026-02-08 15:01:13,482 - Model - INFO - Learning rate:0.000478
+2026-02-08 15:02:02,877 - Model - INFO - Train loss: 0.03459
+2026-02-08 15:02:02,890 - Model - INFO - Train F1 score: 0.99332
+2026-02-08 15:02:09,063 - Model - INFO - Val loss: 0.03703
+2026-02-08 15:02:09,064 - Model - INFO - Val F1 score: 0.99248
+2026-02-08 15:02:09,088 - Model - INFO - Save checkpoint at epoch 160...
+2026-02-08 15:02:09,089 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_160.pth
+2026-02-08 15:02:09,285 - Model - INFO - Epoch 161 (161/200):
+2026-02-08 15:02:09,285 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:03:00,298 - Model - INFO - Train loss: 0.03465
+2026-02-08 15:03:00,305 - Model - INFO - Train F1 score: 0.99336
+2026-02-08 15:03:06,085 - Model - INFO - Val loss: 0.04068
+2026-02-08 15:03:06,085 - Model - INFO - Val F1 score: 0.99156
+2026-02-08 15:03:06,138 - Model - INFO - Epoch 162 (162/200):
+2026-02-08 15:03:06,139 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:03:56,282 - Model - INFO - Train loss: 0.03762
+2026-02-08 15:03:56,292 - Model - INFO - Train F1 score: 0.99245
+2026-02-08 15:04:01,996 - Model - INFO - Val loss: 0.03933
+2026-02-08 15:04:01,997 - Model - INFO - Val F1 score: 0.99168
+2026-02-08 15:04:02,870 - Model - INFO - Epoch 163 (163/200):
+2026-02-08 15:04:02,871 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:04:54,199 - Model - INFO - Train loss: 0.03625
+2026-02-08 15:04:54,204 - Model - INFO - Train F1 score: 0.99298
+2026-02-08 15:05:00,194 - Model - INFO - Val loss: 0.03831
+2026-02-08 15:05:00,195 - Model - INFO - Val F1 score: 0.99224
+2026-02-08 15:05:00,241 - Model - INFO - Epoch 164 (164/200):
+2026-02-08 15:05:00,242 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:05:51,875 - Model - INFO - Train loss: 0.03531
+2026-02-08 15:05:51,876 - Model - INFO - Train F1 score: 0.99312
+2026-02-08 15:05:57,821 - Model - INFO - Val loss: 0.03644
+2026-02-08 15:05:57,822 - Model - INFO - Val F1 score: 0.99247
+2026-02-08 15:05:57,903 - Model - INFO - Epoch 165 (165/200):
+2026-02-08 15:05:57,904 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:06:49,122 - Model - INFO - Train loss: 0.03981
+2026-02-08 15:06:49,135 - Model - INFO - Train F1 score: 0.99198
+2026-02-08 15:06:55,025 - Model - INFO - Val loss: 0.04419
+2026-02-08 15:06:55,031 - Model - INFO - Val F1 score: 0.98998
+2026-02-08 15:06:55,032 - Model - INFO - Save checkpoint at epoch 165...
+2026-02-08 15:06:55,032 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_165.pth
+2026-02-08 15:06:55,219 - Model - INFO - Epoch 166 (166/200):
+2026-02-08 15:06:55,219 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:07:46,347 - Model - INFO - Train loss: 0.03778
+2026-02-08 15:07:46,348 - Model - INFO - Train F1 score: 0.99261
+2026-02-08 15:07:52,061 - Model - INFO - Val loss: 0.03663
+2026-02-08 15:07:52,062 - Model - INFO - Val F1 score: 0.99257
+2026-02-08 15:07:52,107 - Model - INFO - Epoch 167 (167/200):
+2026-02-08 15:07:52,108 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:08:42,982 - Model - INFO - Train loss: 0.03466
+2026-02-08 15:08:42,983 - Model - INFO - Train F1 score: 0.99334
+2026-02-08 15:08:48,687 - Model - INFO - Val loss: 0.03550
+2026-02-08 15:08:48,688 - Model - INFO - Val F1 score: 0.99279
+2026-02-08 15:08:48,749 - Model - INFO - Epoch 168 (168/200):
+2026-02-08 15:08:48,750 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:09:38,798 - Model - INFO - Train loss: 0.03369
+2026-02-08 15:09:38,799 - Model - INFO - Train F1 score: 0.99360
+2026-02-08 15:09:44,383 - Model - INFO - Val loss: 0.03517
+2026-02-08 15:09:44,383 - Model - INFO - Val F1 score: 0.99278
+2026-02-08 15:09:44,432 - Model - INFO - Epoch 169 (169/200):
+2026-02-08 15:09:44,433 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:10:34,850 - Model - INFO - Train loss: 0.03392
+2026-02-08 15:10:34,850 - Model - INFO - Train F1 score: 0.99352
+2026-02-08 15:10:40,534 - Model - INFO - Val loss: 0.03607
+2026-02-08 15:10:40,535 - Model - INFO - Val F1 score: 0.99261
+2026-02-08 15:10:40,593 - Model - INFO - Epoch 170 (170/200):
+2026-02-08 15:10:40,594 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:11:30,636 - Model - INFO - Train loss: 0.03425
+2026-02-08 15:11:30,656 - Model - INFO - Train F1 score: 0.99348
+2026-02-08 15:11:36,636 - Model - INFO - Val loss: 0.03570
+2026-02-08 15:11:36,636 - Model - INFO - Val F1 score: 0.99284
+2026-02-08 15:11:36,651 - Model - INFO - Save checkpoint at epoch 170...
+2026-02-08 15:11:36,652 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_170.pth
+2026-02-08 15:11:36,786 - Model - INFO - Epoch 171 (171/200):
+2026-02-08 15:11:36,787 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:12:27,712 - Model - INFO - Train loss: 0.03365
+2026-02-08 15:12:27,713 - Model - INFO - Train F1 score: 0.99355
+2026-02-08 15:12:33,828 - Model - INFO - Val loss: 0.03450
+2026-02-08 15:12:33,829 - Model - INFO - Val F1 score: 0.99309
+2026-02-08 15:12:33,887 - Model - INFO - Epoch 172 (172/200):
+2026-02-08 15:12:33,887 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:13:25,539 - Model - INFO - Train loss: 0.03313
+2026-02-08 15:13:25,587 - Model - INFO - Train F1 score: 0.99371
+2026-02-08 15:13:31,421 - Model - INFO - Val loss: 0.03573
+2026-02-08 15:13:31,421 - Model - INFO - Val F1 score: 0.99281
+2026-02-08 15:13:31,507 - Model - INFO - Epoch 173 (173/200):
+2026-02-08 15:13:31,507 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:14:22,430 - Model - INFO - Train loss: 0.03378
+2026-02-08 15:14:22,431 - Model - INFO - Train F1 score: 0.99354
+2026-02-08 15:14:28,293 - Model - INFO - Val loss: 0.03551
+2026-02-08 15:14:28,294 - Model - INFO - Val F1 score: 0.99276
+2026-02-08 15:14:28,341 - Model - INFO - Epoch 174 (174/200):
+2026-02-08 15:14:28,342 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:15:19,084 - Model - INFO - Train loss: 0.03344
+2026-02-08 15:15:19,085 - Model - INFO - Train F1 score: 0.99357
+2026-02-08 15:15:25,079 - Model - INFO - Val loss: 0.03638
+2026-02-08 15:15:25,080 - Model - INFO - Val F1 score: 0.99255
+2026-02-08 15:15:25,130 - Model - INFO - Epoch 175 (175/200):
+2026-02-08 15:15:25,131 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:16:15,733 - Model - INFO - Train loss: 0.03360
+2026-02-08 15:16:15,740 - Model - INFO - Train F1 score: 0.99355
+2026-02-08 15:16:21,570 - Model - INFO - Val loss: 0.03538
+2026-02-08 15:16:21,571 - Model - INFO - Val F1 score: 0.99287
+2026-02-08 15:16:21,572 - Model - INFO - Save checkpoint at epoch 175...
+2026-02-08 15:16:21,572 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_175.pth
+2026-02-08 15:16:21,742 - Model - INFO - Epoch 176 (176/200):
+2026-02-08 15:16:21,743 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:17:13,038 - Model - INFO - Train loss: 0.03418
+2026-02-08 15:17:13,039 - Model - INFO - Train F1 score: 0.99341
+2026-02-08 15:17:18,524 - Model - INFO - Val loss: 0.03652
+2026-02-08 15:17:18,525 - Model - INFO - Val F1 score: 0.99248
+2026-02-08 15:17:18,579 - Model - INFO - Epoch 177 (177/200):
+2026-02-08 15:17:18,580 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:18:09,944 - Model - INFO - Train loss: 0.03386
+2026-02-08 15:18:09,966 - Model - INFO - Train F1 score: 0.99349
+2026-02-08 15:18:15,998 - Model - INFO - Val loss: 0.03586
+2026-02-08 15:18:15,998 - Model - INFO - Val F1 score: 0.99272
+2026-02-08 15:18:16,039 - Model - INFO - Epoch 178 (178/200):
+2026-02-08 15:18:16,039 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:19:08,101 - Model - INFO - Train loss: 0.03358
+2026-02-08 15:19:08,102 - Model - INFO - Train F1 score: 0.99357
+2026-02-08 15:19:14,142 - Model - INFO - Val loss: 0.03446
+2026-02-08 15:19:14,143 - Model - INFO - Val F1 score: 0.99316
+2026-02-08 15:19:14,215 - Model - INFO - Epoch 179 (179/200):
+2026-02-08 15:19:14,216 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:20:04,864 - Model - INFO - Train loss: 0.03305
+2026-02-08 15:20:04,865 - Model - INFO - Train F1 score: 0.99374
+2026-02-08 15:20:10,426 - Model - INFO - Val loss: 0.03490
+2026-02-08 15:20:10,426 - Model - INFO - Val F1 score: 0.99299
+2026-02-08 15:20:10,508 - Model - INFO - Epoch 180 (180/200):
+2026-02-08 15:20:10,508 - Model - INFO - Learning rate:0.000430
+2026-02-08 15:21:00,874 - Model - INFO - Train loss: 0.03432
+2026-02-08 15:21:00,874 - Model - INFO - Train F1 score: 0.99346
+2026-02-08 15:21:06,744 - Model - INFO - Val loss: 0.03498
+2026-02-08 15:21:06,745 - Model - INFO - Val F1 score: 0.99285
+2026-02-08 15:21:06,763 - Model - INFO - Save checkpoint at epoch 180...
+2026-02-08 15:21:06,763 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_180.pth
+2026-02-08 15:21:07,205 - Model - INFO - Epoch 181 (181/200):
+2026-02-08 15:21:07,212 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:21:57,862 - Model - INFO - Train loss: 0.03314
+2026-02-08 15:21:57,862 - Model - INFO - Train F1 score: 0.99374
+2026-02-08 15:22:03,509 - Model - INFO - Val loss: 0.03484
+2026-02-08 15:22:03,510 - Model - INFO - Val F1 score: 0.99304
+2026-02-08 15:22:03,559 - Model - INFO - Epoch 182 (182/200):
+2026-02-08 15:22:03,559 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:22:54,992 - Model - INFO - Train loss: 0.03393
+2026-02-08 15:22:54,995 - Model - INFO - Train F1 score: 0.99344
+2026-02-08 15:23:00,797 - Model - INFO - Val loss: 0.03480
+2026-02-08 15:23:00,798 - Model - INFO - Val F1 score: 0.99286
+2026-02-08 15:23:00,846 - Model - INFO - Epoch 183 (183/200):
+2026-02-08 15:23:00,847 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:23:52,121 - Model - INFO - Train loss: 0.03288
+2026-02-08 15:23:52,124 - Model - INFO - Train F1 score: 0.99377
+2026-02-08 15:23:57,994 - Model - INFO - Val loss: 0.03405
+2026-02-08 15:23:57,995 - Model - INFO - Val F1 score: 0.99333
+2026-02-08 15:23:58,038 - Model - INFO - Epoch 184 (184/200):
+2026-02-08 15:23:58,038 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:24:49,081 - Model - INFO - Train loss: 0.03315
+2026-02-08 15:24:49,083 - Model - INFO - Train F1 score: 0.99368
+2026-02-08 15:24:54,627 - Model - INFO - Val loss: 0.03617
+2026-02-08 15:24:54,628 - Model - INFO - Val F1 score: 0.99276
+2026-02-08 15:24:54,724 - Model - INFO - Epoch 185 (185/200):
+2026-02-08 15:24:54,727 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:25:44,027 - Model - INFO - Train loss: 0.03286
+2026-02-08 15:25:44,034 - Model - INFO - Train F1 score: 0.99382
+2026-02-08 15:25:50,056 - Model - INFO - Val loss: 0.03462
+2026-02-08 15:25:50,057 - Model - INFO - Val F1 score: 0.99297
+2026-02-08 15:25:50,058 - Model - INFO - Save checkpoint at epoch 185...
+2026-02-08 15:25:50,058 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_185.pth
+2026-02-08 15:25:50,198 - Model - INFO - Epoch 186 (186/200):
+2026-02-08 15:25:50,199 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:26:41,379 - Model - INFO - Train loss: 0.03333
+2026-02-08 15:26:41,387 - Model - INFO - Train F1 score: 0.99373
+2026-02-08 15:26:47,211 - Model - INFO - Val loss: 0.03450
+2026-02-08 15:26:47,212 - Model - INFO - Val F1 score: 0.99310
+2026-02-08 15:26:47,269 - Model - INFO - Epoch 187 (187/200):
+2026-02-08 15:26:47,269 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:27:38,684 - Model - INFO - Train loss: 0.03300
+2026-02-08 15:27:38,689 - Model - INFO - Train F1 score: 0.99369
+2026-02-08 15:27:44,646 - Model - INFO - Val loss: 0.03414
+2026-02-08 15:27:44,647 - Model - INFO - Val F1 score: 0.99299
+2026-02-08 15:27:44,694 - Model - INFO - Epoch 188 (188/200):
+2026-02-08 15:27:44,695 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:28:35,716 - Model - INFO - Train loss: 0.03386
+2026-02-08 15:28:35,717 - Model - INFO - Train F1 score: 0.99346
+2026-02-08 15:28:41,748 - Model - INFO - Val loss: 0.03559
+2026-02-08 15:28:41,749 - Model - INFO - Val F1 score: 0.99277
+2026-02-08 15:28:41,815 - Model - INFO - Epoch 189 (189/200):
+2026-02-08 15:28:41,815 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:29:32,752 - Model - INFO - Train loss: 0.03335
+2026-02-08 15:29:32,753 - Model - INFO - Train F1 score: 0.99366
+2026-02-08 15:29:38,764 - Model - INFO - Val loss: 0.03554
+2026-02-08 15:29:38,764 - Model - INFO - Val F1 score: 0.99276
+2026-02-08 15:29:38,809 - Model - INFO - Epoch 190 (190/200):
+2026-02-08 15:29:38,809 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:30:29,291 - Model - INFO - Train loss: 0.03250
+2026-02-08 15:30:29,292 - Model - INFO - Train F1 score: 0.99379
+2026-02-08 15:30:35,392 - Model - INFO - Val loss: 0.03543
+2026-02-08 15:30:35,393 - Model - INFO - Val F1 score: 0.99286
+2026-02-08 15:30:35,406 - Model - INFO - Save checkpoint at epoch 190...
+2026-02-08 15:30:35,406 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_190.pth
+2026-02-08 15:30:35,562 - Model - INFO - Epoch 191 (191/200):
+2026-02-08 15:30:35,563 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:31:26,467 - Model - INFO - Train loss: 0.03294
+2026-02-08 15:31:26,475 - Model - INFO - Train F1 score: 0.99373
+2026-02-08 15:31:32,199 - Model - INFO - Val loss: 0.03614
+2026-02-08 15:31:32,202 - Model - INFO - Val F1 score: 0.99290
+2026-02-08 15:31:32,248 - Model - INFO - Epoch 192 (192/200):
+2026-02-08 15:31:32,248 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:32:22,033 - Model - INFO - Train loss: 0.03370
+2026-02-08 15:32:22,046 - Model - INFO - Train F1 score: 0.99349
+2026-02-08 15:32:28,068 - Model - INFO - Val loss: 0.03540
+2026-02-08 15:32:28,068 - Model - INFO - Val F1 score: 0.99310
+2026-02-08 15:32:28,121 - Model - INFO - Epoch 193 (193/200):
+2026-02-08 15:32:28,122 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:33:19,062 - Model - INFO - Train loss: 0.03511
+2026-02-08 15:33:19,063 - Model - INFO - Train F1 score: 0.99306
+2026-02-08 15:33:24,931 - Model - INFO - Val loss: 0.03776
+2026-02-08 15:33:24,931 - Model - INFO - Val F1 score: 0.99158
+2026-02-08 15:33:24,974 - Model - INFO - Epoch 194 (194/200):
+2026-02-08 15:33:24,975 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:34:16,238 - Model - INFO - Train loss: 0.03342
+2026-02-08 15:34:16,241 - Model - INFO - Train F1 score: 0.99354
+2026-02-08 15:34:22,158 - Model - INFO - Val loss: 0.03477
+2026-02-08 15:34:22,159 - Model - INFO - Val F1 score: 0.99303
+2026-02-08 15:34:22,213 - Model - INFO - Epoch 195 (195/200):
+2026-02-08 15:34:22,214 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:35:12,356 - Model - INFO - Train loss: 0.03313
+2026-02-08 15:35:12,357 - Model - INFO - Train F1 score: 0.99360
+2026-02-08 15:35:18,344 - Model - INFO - Val loss: 0.03449
+2026-02-08 15:35:18,345 - Model - INFO - Val F1 score: 0.99300
+2026-02-08 15:35:18,346 - Model - INFO - Save checkpoint at epoch 195...
+2026-02-08 15:35:18,346 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/ckpt_195.pth
+2026-02-08 15:35:18,507 - Model - INFO - Epoch 196 (196/200):
+2026-02-08 15:35:18,508 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:36:09,729 - Model - INFO - Train loss: 0.03289
+2026-02-08 15:36:09,730 - Model - INFO - Train F1 score: 0.99373
+2026-02-08 15:36:15,559 - Model - INFO - Val loss: 0.03528
+2026-02-08 15:36:15,560 - Model - INFO - Val F1 score: 0.99291
+2026-02-08 15:36:15,610 - Model - INFO - Epoch 197 (197/200):
+2026-02-08 15:36:15,611 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:37:05,677 - Model - INFO - Train loss: 0.03302
+2026-02-08 15:37:05,678 - Model - INFO - Train F1 score: 0.99366
+2026-02-08 15:37:11,094 - Model - INFO - Val loss: 0.03651
+2026-02-08 15:37:11,094 - Model - INFO - Val F1 score: 0.99254
+2026-02-08 15:37:11,174 - Model - INFO - Epoch 198 (198/200):
+2026-02-08 15:37:11,174 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:37:59,887 - Model - INFO - Train loss: 0.03329
+2026-02-08 15:37:59,888 - Model - INFO - Train F1 score: 0.99360
+2026-02-08 15:38:05,401 - Model - INFO - Val loss: 0.03414
+2026-02-08 15:38:05,402 - Model - INFO - Val F1 score: 0.99321
+2026-02-08 15:38:05,454 - Model - INFO - Epoch 199 (199/200):
+2026-02-08 15:38:05,454 - Model - INFO - Learning rate:0.000387
+2026-02-08 15:38:52,165 - Model - INFO - Train loss: 0.03304
+2026-02-08 15:38:52,166 - Model - INFO - Train F1 score: 0.99360
+2026-02-08 15:38:57,436 - Model - INFO - Val loss: 0.03511
+2026-02-08 15:38:57,437 - Model - INFO - Val F1 score: 0.99263
+2026-02-08 15:38:57,488 - Model - INFO - Epoch 200 (200/200):
+2026-02-08 15:38:57,488 - Model - INFO - Learning rate:0.000387
+2026-02-08 16:00:44,838 - Model - INFO - Train loss: 0.03264
+2026-02-08 16:00:44,839 - Model - INFO - Train F1 score: 0.99382
+2026-02-08 16:03:14,802 - Model - INFO - Val loss: 0.03546
+2026-02-08 16:03:14,802 - Model - INFO - Val F1 score: 0.99286
+2026-02-08 16:03:15,074 - Model - INFO - Save model...
+2026-02-08 16:03:15,074 - Model - INFO - Saving at log/part_seg/Exp6_1_NLL_weight[None]/checkpoints/model.pth
+2026-02-08 16:03:15,169 - Model - INFO - TensorBoard logs saved to: runs/Exp6_1_NLL_weight[None]
