@@ -23,10 +23,11 @@ def pc_normalize(pc):
     return pc, pc_min, pc_max
 
 class PartNormalDataset(Dataset):
-    def __init__(self, root='./data', npoints=None, split='train'):  # 将 npoints 默认值改为 None
+    def __init__(self, root='./data', npoints=None, split='train', conf_channel=False):  # 将 npoints 默认值改为 None
         self.npoints = npoints  # 允许 npoints 为 None
         self.root = root
         self.split = split
+        self.conf_channel = conf_channel
 
         # 初始化 datapath 列表
         self.datapath = []
@@ -68,7 +69,11 @@ class PartNormalDataset(Dataset):
             cls = np.array([0]).astype(np.int32)
             data = np.loadtxt(fn, delimiter=',').astype(np.float64)
 
-            point_set = data[:, [0, 1]]  # use x, y
+            if not self.conf_channel:
+                point_set = data[:, [0, 1]]  # use x, y
+            else:
+                point_set = data[:, [0, 1, 3]]  # use x, y, signal_conf
+                point_set[:, -1] = point_set[:, -1].astype(np.int32)
 
             seg = data[:, -1].astype(np.int32)
 
@@ -88,7 +93,12 @@ class PartNormalDataset(Dataset):
                 seg = seg[choice]
                 point_set_normalized_mask = point_set_normalized_mask[choice]  # 更新mask
             elif len(seg) < self.npoints:
-                pad_point = np.ones((self.npoints - len(seg), 2), dtype=np.float32)
+                if not self.conf_channel:
+                    pad_point = np.ones((self.npoints - len(seg), 2), dtype=np.float32)
+                else:
+                    pad_point = np.ones((self.npoints - len(seg), 2), dtype=np.float32)
+                    pad_conf = np.ones((self.npoints - len(seg), 1), dtype=np.int32)
+                    pad_point = np.concatenate((pad_point, pad_conf), axis=1)
 
                 point_set_normalized = np.concatenate((point_set_normalized, pad_point), axis=0)
                 pad_seg = np.zeros(self.npoints - len(seg), dtype=np.int32)

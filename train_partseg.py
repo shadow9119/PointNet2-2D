@@ -161,6 +161,7 @@ def parse_args():
     parser.add_argument('--alpha_max', type=float, default=10.0, help='maximum alpha value for Adaptive Focal Loss')
     parser.add_argument('--log_dir_name', type=str, default=None, help='custom log directory name (default: use current date)')
     parser.add_argument('--nll_weight', type=str, default='None', help='weight parameter for NLL loss (use "None" for no weight)')
+    parser.add_argument('--conf_channel', action='store_true', default=False, help='use confidence channel (x, y, signal_conf) instead of just (x, y)')
 
     return parser.parse_args()
 
@@ -197,15 +198,17 @@ def main(args):
     exp_dir.mkdir(exist_ok=True)
     exp_dir = exp_dir.joinpath('part_seg')
     exp_dir.mkdir(exist_ok=True)
-    pretrain_dir = Path('')
-    if args.ckpt:
-        pretrain_dir = exp_dir.joinpath(args.ckpt)
     exp_dir = exp_dir.joinpath(timestr)
     exp_dir.mkdir(exist_ok=True)
     checkpoints_dir = exp_dir.joinpath('checkpoints/')
     checkpoints_dir.mkdir(exist_ok=True)
     log_dir = exp_dir.joinpath('logs/')
     log_dir.mkdir(exist_ok=True)
+    
+    # 构建checkpoint路径（在exp_dir更新后）
+    pretrain_dir = Path('')
+    if args.ckpt:
+        pretrain_dir = checkpoints_dir.joinpath(args.ckpt)
 
     '''LOG'''
     # 在 [./log/part_seg/日期(年月日时分秒)/logs/]文件夹下，建立model名.txt的日志文件（比如pointnet2_part_seg_msg.txt)
@@ -222,13 +225,13 @@ def main(args):
 
     root = args.data_root  # 获得根目录路径
 
-    TRAIN_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='train') # 创建训练数据集 TRAIN_DATASET，获取训练集的文件目录表
+    TRAIN_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='train', conf_channel=args.conf_channel) # 创建训练数据集 TRAIN_DATASET，获取训练集的文件目录表
     trainDataLoader = torch.utils.data.DataLoader(TRAIN_DATASET, batch_size=args.batch_size, shuffle=True,
                                                   num_workers=3, drop_last=True) # 在训练过程中按批次加载数据，batch_size指定每个批次的数据量
                                                                                     # shuffle=True 表示在每个 epoch 开始时对数据进行洗牌。
                                                                                     # num_workers=3 指定使用 3 个子进程来加载数据，以加速数据读取。
                                                                                     # drop_last=True 表示如果最后一个批次的样本不足一个批次的大小，则丢弃它。
-    VAL_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='val')
+    VAL_DATASET = PartNormalDataset(root=root, npoints=args.npoint, split='val', conf_channel=args.conf_channel)
     valDataLoader = torch.utils.data.DataLoader(VAL_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=3)
     log_string("train_partseg中，已读入train集个数: %d" % len(TRAIN_DATASET))
     log_string("train_partseg中，已读入val集个数:  %d" % len(VAL_DATASET))
@@ -242,7 +245,7 @@ def main(args):
     shutil.copy('models/%s.py' % args.model, str(exp_dir))
     shutil.copy('models/pointnet2_utils.py', str(exp_dir))
 
-    classifier = MODEL.get_model(num_part).to(device)
+    classifier = MODEL.get_model(num_part, conf_channel=args.conf_channel).to(device)
 
     # ================= 损失函数选择区 =================
 
@@ -548,6 +551,7 @@ def main(args):
                 break
 
         # save checkpoints 保存检查点
+        # 每5个epoch保存一次checkpoint（可根据需要调整频率）
         if (epoch + 1) % 5 == 0 and epoch != (args.epoch+start_epoch-1):
             logger.info('Save checkpoint at epoch %d...' % (epoch+1))
             save_ckptpath = str(checkpoints_dir) + '/ckpt_' + str(epoch + 1) + '.pth'

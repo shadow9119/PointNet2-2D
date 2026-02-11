@@ -6,7 +6,6 @@ import torch
 import logging
 import sys
 import importlib
-from tqdm import tqdm
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import pandas as pd
@@ -84,6 +83,7 @@ def parse_args():
     parser.add_argument('--output', action='store_false', help='output test results')
     parser.add_argument('--threshold', type=float, default=0.5, help='probability threshold')
     parser.add_argument('--exp_name', type=str, default=None, help='experiment name for CSV output')
+    parser.add_argument('--conf_channel', action='store_true', default=False, help='use confidence channel (x, y, signal_conf) instead of just (x, y)')
     return parser.parse_args()
 
 def main(args):
@@ -128,7 +128,7 @@ def main(args):
     root = args.data_root
 
     # 减少num_workers以降低内存使用
-    TEST_DATASET = PartNormalDataset(root=root, npoints=args.num_point, split='test')
+    TEST_DATASET = PartNormalDataset(root=root, npoints=args.num_point, split='test', conf_channel=args.conf_channel)
     testDataLoader = torch.utils.data.DataLoader(TEST_DATASET, batch_size=args.batch_size, shuffle=False, num_workers=2)
     log_string("test_partseg中，已读入test集个数: %d" % len(TEST_DATASET))
     
@@ -138,7 +138,7 @@ def main(args):
     '''MODEL LOADING'''
     model_name = os.listdir(os.path.join(experiment_dir, 'logs'))[0].split('.')[0]
     MODEL = importlib.import_module(model_name)
-    classifier = MODEL.get_model(num_part).to(device)
+    classifier = MODEL.get_model(num_part, conf_channel=args.conf_channel).to(device)
     
     # 加载检查点时清理缓存
     if args.ckpt:
@@ -159,7 +159,7 @@ def main(args):
         global_index = 0
         results = []
 
-        for batch_id, (points, label, target, point_set_normalized_mask, pc_min, pc_max, fn) in tqdm(enumerate(testDataLoader), total=len(testDataLoader), smoothing=0.9):
+        for batch_id, (points, label, target, point_set_normalized_mask, pc_min, pc_max, fn) in enumerate(testDataLoader):
             cur_batch_size, NUM_POINT, _ = points.size()
             
             # 处理超大点云：如果点云数量超过max_point，进行随机采样
@@ -276,6 +276,11 @@ def main(args):
                     )
                     
                     current_filename = os.path.basename(fn[i])
+                    
+                    # 实时打印每个文件的指标
+                    print(f'Test Sample: {current_filename} | P: {precision:.4f} | R: {recall:.4f} | F1: {f1:.4f}')
+                    log_string(f'Test Sample: {current_filename} | P: {precision:.4f} | R: {recall:.4f} | F1: {f1:.4f}')
+                    
                     plot_points(global_index, cur_points, segp, 'test', current_filename, precision, recall, f1, args.exp_name)
                     global_index += 1
                     
